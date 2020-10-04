@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: schema
+# key: schema
+# binding: direct-keybinding
+# --
+create schema ${1:schema};
+$0

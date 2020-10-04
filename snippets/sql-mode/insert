@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: insert
+# key: insert
+# binding: direct-keybinding
+# --
+insert into ${1:tabla} (${2:columnas}) values (${3:valores});
+$0

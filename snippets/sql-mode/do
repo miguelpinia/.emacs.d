@@ -1,0 +1,12 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: do
+# key: do
+# binding: direct-keybinding
+# --
+do language plpgsql $$
+declare
+${1:atributos}
+begin
+${0:instrucciones}
+end;
+$$

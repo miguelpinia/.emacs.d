@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name:
+# key: adelete
+# uuid: adelete
+# --
+await axios
+   .delete(
+       $1
+   )
+   .then(
+       $0
+   );

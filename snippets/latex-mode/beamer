@@ -1,0 +1,37 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: beamer
+# key: beamer
+# binding: direct-keybinding
+# --
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usetheme{Goettingen}
+\usecolortheme{default}
+\useoutertheme{shadow}
+\useinnertheme{rectangles}
+\graphicspath{ {./figures/} }
+\title[${1:acrotitle}]{${2:título}}
+\subtitle{${3:subtítulo}}
+\author[Miguel]{Miguel Angel Piña Avelino}
+\institute[${4:acronUniversity}]{
+  ${5:NombreUniversidad}
+}
+\date{\today}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}
+    \frametitle{Índice}
+    \tableofcontents
+\end{frame}
+
+\section{${6:Introducción}}
+\begin{frame}
+  \frametitle{${6:Introducción}}
+  ${0:TODO HERE}
+\end{frame}
+
+\end{document}

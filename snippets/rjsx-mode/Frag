@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Frag
+# key: Frag
+# --
+<React.Fragment $0/>

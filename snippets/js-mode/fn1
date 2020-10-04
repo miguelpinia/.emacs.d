@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: Lambda function without body
+# key: fn1
+# --
+($1) => ($0)

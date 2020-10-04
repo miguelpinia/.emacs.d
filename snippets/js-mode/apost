@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: apost
+# key: apost
+# --
+await axios
+   .post(
+       $1
+   )
+   .then((response) => {
+       $2
+   })
+   .catch((err) => {
+       console.log(err);
+   });

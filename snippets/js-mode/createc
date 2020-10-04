@@ -1,0 +1,38 @@
+# -*- mode: snippet -*-
+# name: Create controller
+# key: createc
+# --
+const $1 = (req, res, next) => {
+   const {$2} = req.body.data;
+   if ($3) {
+      res.status(400).json({
+        message:
+         'Te faltó especificar $4. Observa los atributos faltantes para más información.',
+        faltantes: [$5]
+      });
+   };
+   $6.create({
+        $2
+   }).then(($7) => {
+     console.log(
+       req.protocol +
+         ' ' +
+         req.method +
+         ' ' +
+         req.path +
+         ' -- ' +
+         req.ip +
+         ' -- 200 (OK)'
+     );
+     res.status(200).json({
+       message: '',
+       $7: $7
+     });
+   }).catch((err) => {
+     console.error(err.message);
+     res.status(500).json({
+       message:
+         ''
+     });
+  });
+};

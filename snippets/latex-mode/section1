@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: section*
+# key: sek*
+# binding: C-c C-l C-s
+# --
+\section*{${1:nombre}}

@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: autorsh
+# key: autorsh
+# binding: direct-keybinding
+# --
+
+Autor: Miguel Angel Piña Avelino
+${1:descripcion}
+Version: $2
+$0

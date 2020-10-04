@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Org title
+# key: title
+# binding: C-c i t
+# --
+#+title: ${1:titulo}
+#+author: Miguel Piña
+#+date: ${1:$(format-time-string "[%Y-%m-%d %a %H:%M]" (current-time))}
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+$0

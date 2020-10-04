@@ -1,0 +1,29 @@
+# -*- mode: snippet -*-
+# name: describe test block
+# key: ds
+# uuid: ds
+# --
+describe('$1', () => {
+  let browser;
+  let page;
+
+  beforeAll(async () => {
+    browser = await puppeteer.launch(puppeteerArgs);
+    page = await browser.newPage();
+    await page.goto('http://localhost:3000', { waitUntil: 'networkidle2' });
+    await expectPuppeteer(page).toFillForm('form', {
+      usuario: 'foo@mail.com',
+      password: 'bar'
+    });
+    await page.click('button[type=submit]');
+    await page.waitForSelector('html');
+    await page.waitFor(200);
+  });
+
+  afterAll(async () => {
+    await browser.close();
+  });
+
+ $0
+
+})`(js-react-redux-yasnippets-semicolon)`

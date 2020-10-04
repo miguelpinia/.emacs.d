@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: it expect simple
+# key: itex
+# --
+it('$1', async () => {
+  await expect(page).toMatch('$2');
+})

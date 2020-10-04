@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: Async function
+# key: alam
+# --
+
+async ($1) => {
+  $0
+}

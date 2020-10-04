@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: select
+# key: sel1
+# binding: direct-keybinding
+# --
+select ${1:*} from $2;

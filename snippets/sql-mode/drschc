@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: drschc
+# key: drschc
+# binding: direct-keybinding
+# --
+drop schema ${1:schema} cascade;
+$0

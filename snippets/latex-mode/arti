@@ -1,0 +1,27 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: arti
+# key: arti
+# binding: direct-keybinding
+# --
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{makeidx}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\graphicspath{ {./figures/} }
+\author{${1:Miguel Angel Piña Avelino}}
+\date{\today}
+\title{${2:title}}
+\begin{document}
+\maketitle
+
+\section*{${3:Introducción}}
+
+$0
+
+\end{document}

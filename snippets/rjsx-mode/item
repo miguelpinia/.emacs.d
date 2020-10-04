@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: item
+# key: item
+# --
+<Grid item xs={12}>
+  $0
+</Grid>

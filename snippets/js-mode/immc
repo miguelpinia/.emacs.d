@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Import from @material-ui/core
+# key: immc
+# uuid: immc
+# --
+import ${1:Object} from '@material-ui/core/$1'`(if (eolp) (js-react-redux-yasnippets-semicolon))`

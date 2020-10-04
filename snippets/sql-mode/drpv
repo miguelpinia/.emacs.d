@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: drpv
+# key: drpv
+# binding: direct-keybinding
+# --
+drop view if exists ${1:view};
+$0

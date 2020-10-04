@@ -1,0 +1,8 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: inserta nuevo elemento
+# key: nuevo
+# binding: C-c C-m C-k
+# --
+  -- ${2:descripción}
+  , ${1:dato}
+$0

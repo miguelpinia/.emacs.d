@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: drtab
+# key: drtab
+# binding: direct-keybinding
+# --
+drop table if exists ${1:table};
+$0

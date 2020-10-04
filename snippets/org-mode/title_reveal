@@ -1,0 +1,23 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: Org title
+# key: titre
+# binding: C-c i r
+# --
+#+REVEAL_ROOT: file:///home/miguel/proyectos/reveal.js
+#+title: ${1:titulo}
+#+author: Miguel Piña
+#+date: ${1:$(format-time-string "[%Y-%m-%d %a %H:%M]" (current-time))}
+#+setupfile: ~/proyectos/org-html-themes/setup/theme-bigblow.setup
+
+#+OPTIONS: reveal_center:t reveal_progress:t reveal_history:nil reveal_control:t
+#+OPTIONS: reveal_mathjax:t reveal_rolling_links:t reveal_keyboard:t reveal_overview:t num:nil
+#+OPTIONS: reveal_width:1200 reveal_height:800
+#+OPTIONS: reveal_single_file:ni
+#+OPTIONS: toc:nil
+
+#+REVEAL_THEME: night
+#+REVEAL_EXTRA_CSS: file:///home/miguel/proyectos/reveal.js/presentation.css
+#+REVEAL_TRANS: slide
+#+REVEAL_SPEED: slow
+
+$0

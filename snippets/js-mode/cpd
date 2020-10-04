@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: case básico para el switch de un reducer
+# key: cpd
+# UUID: cpd
+# --
+case $1:
+  return {...state, $2: action.payload};
+$0

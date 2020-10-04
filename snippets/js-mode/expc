@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: export const
+# key: expc
+# --
+export const $1 = '$1';

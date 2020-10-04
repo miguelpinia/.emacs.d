@@ -1,0 +1,7 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: tag
+# key: tag
+# binding: direct-keybinding
+# --
+#+TAGS: ${1:tags}
+$0

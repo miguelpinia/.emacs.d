@@ -1,0 +1,11 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: begin
+# key: be
+# binding: direct-keybinding
+# --
+begin;
+set client_encoding = 'utf-8';
+
+$0
+
+commit;

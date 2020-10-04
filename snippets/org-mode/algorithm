@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: algorithm
+# key: algorithm
+# --
+#+LaTeX_HEADER: \usepackage[lined,boxed,commentsnumbered]{algorithm2e}

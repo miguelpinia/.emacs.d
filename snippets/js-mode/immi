@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: Import from @material-ui/icons
+# key: immi
+# uuid: immi
+# --
+import ${1:Object} from '@material-ui/icons/$1'`(if (eolp) (js-react-redux-yasnippets-semicolon))`;
