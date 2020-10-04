@@ -1,5 +1,7 @@
 (require 'dired+)
 
+(use-package column-enforce-mode :ensure t)
+
 (setq-default auto-save-default nil
               backup-directory-alist  `(("." . ,(concat user-emacs-directory "backups")))
               save-place t

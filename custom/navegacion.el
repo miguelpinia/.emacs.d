@@ -236,7 +236,7 @@
   :ensure t
   :defer t
   :custom
-  (yas-snippet-dirs (append yas-snippet-dirs '("~/.emacs.d/snippets")))
+  (yas-snippet-dirs '("~/.emacs.d/snippets"))
   :hook
   (after-init . yas-global-mode)
   (prog-mode . yas-minor-mode)

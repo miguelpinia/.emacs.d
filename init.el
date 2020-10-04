@@ -29,17 +29,5 @@
 (load "ui.el")
 (load "edicion.el")
 (load "navegacion.el")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (org-pdfview magit-gitflow magit nov helm-swoop resize-window hydra transpose-frame ace-window org-noter-pdftools org-pdftools pdf-tools use-package undo-tree smartparens rainbow-delimiters paredit isearch-dabbrev helm-projectile google-translate dracula-theme dired-isearch dashboard auto-complete all-the-icons-dired))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(load "setup-js.el")
+(load "setup-org.el")
