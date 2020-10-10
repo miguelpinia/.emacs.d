@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: dis
+# key: dis
+# --
+dispatch({type: $1, payload: $2});
+$0
