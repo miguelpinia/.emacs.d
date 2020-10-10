@@ -4,12 +4,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package tern :ensure t)
 
-(use-package tern-auto-complete
-  :ensure t
-  :after tern
-  :config
-  (tern-ac-setup))
-
 (use-package js-react-redux-yasnippets
   :after yasnippet
   :ensure t)
