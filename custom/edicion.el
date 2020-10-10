@@ -77,6 +77,8 @@
 
 (use-package auto-complete
   :ensure t
+  :custom
+  (ac-delay 0.5)
   :init
   (progn
     (ac-config-default)
