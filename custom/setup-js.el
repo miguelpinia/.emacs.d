@@ -48,7 +48,6 @@
                                    "--tab-width" "2"
                                    "--use-tabs" "false"
                                    "--bracket-spacing" "true"
-                                   "--no-semi" "true"
                                    "--single-quote" "true"
                                    "--semi" "true"
                                    "--jsx-single-quote" "true"
