@@ -79,8 +79,9 @@
 (use-package helm-projectile
   :ensure t
   :after (projectile helm)
-  (projectile-completion-system 'helm)
   :bind (("C-c x f" . helm-projectile))
+  :custom
+  (projectile-completion-system 'helm)
   :config
   (helm-projectile-on))
 
