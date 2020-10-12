@@ -1,3 +1,7 @@
+;;; navegacion.el --- Summary
+;;; Commentary:
+;;; Code:
+
 (setq org-reveal-root               "http://cdn.jsdelivr.net/reveal.js/3.0.0/"
       uniquify-buffer-name-style    'forward)
 (global-unset-key (kbd "C-z"))
@@ -5,6 +9,14 @@
 (global-set-key (kbd "C-<f10>") 'menu-bar-mode)
 (global-set-key (kbd "C-c C-t") 'ansi-term)
 (fset 'yes-or-no-p 'y-or-n-p)
+
+
+(use-package tramp
+  :custom
+  (tramp-default-method "ssh"))
+
+(use-package tramp-term
+  :ensure t)
 
 (use-package recentf
   :ensure t
@@ -247,3 +259,4 @@
 
 (use-package ag :ensure t)
 (provide 'navegacion)
+;;; navegacion.el ends here

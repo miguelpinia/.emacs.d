@@ -31,3 +31,4 @@
 (load "navegacion.el")
 (load "setup-js.el")
 (load "setup-org.el")
+(load "terminal.el")
