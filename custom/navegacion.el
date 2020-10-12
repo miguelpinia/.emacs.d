@@ -43,8 +43,8 @@
 (use-package magit-gitflow
   :after magit
   :ensure t
-  :defer t
-  :hook (magit-mode-hook . turn-on-magit-gitflow))
+  :config
+  (add-hook 'magit-mode-hook 'turn-on-magit-gitflow))
 
 (use-package google-translate
   :ensure t
@@ -65,16 +65,15 @@
   :ensure t
   :init
   :bind  (("M-x" . helm-M-x)
-          ("C-c h" . helm-command-prefix)
           ("C-x C-f" . helm-find-files)
-          ;; ("C-c h g" . helm-google-suggest)
+          ("C-c h g" . helm-google-suggest)
           ("C-x C-d" . helm-browse-project)
           ("C-x b" . helm-mini)
+          ("M-y" . helm-show-kill-ring)
           :map helm-map
           ("<tab>" . helm-execute-persistent-action)
           ("C-i" . helm-execute-persistent-action)
-          ("C-z" . helm-select-action)
-          ("M-y" . helm-show-kill-ring))
+          ("C-z" . helm-select-action))
   :custom
   (helm-split-window-in-side-p           t)
   (helm-move-to-line-cycle-in-source     t)

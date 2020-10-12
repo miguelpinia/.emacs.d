@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: cn
+# key: cn
+# --
+const $1 = '$1';

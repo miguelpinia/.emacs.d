@@ -4,12 +4,6 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package tern :ensure t)
 
-(use-package tern-auto-complete
-  :ensure t
-  :after tern
-  :config
-  (tern-ac-setup))
-
 (use-package js-react-redux-yasnippets
   :after yasnippet
   :ensure t)
@@ -44,16 +38,16 @@
 (use-package prettier-js
   :ensure t
   :hook (rjsx-mode . prettier-js-mode)
-  :config (setq prettier-js-args '("--trailing-comma" "none"
-                                   "--tab-width" "2"
-                                   "--use-tabs" "false"
-                                   "--bracket-spacing" "true"
-                                   "--single-quote" "true"
-                                   "--semi" "true"
-                                   "--jsx-single-quote" "true"
-                                   "--jsx-bracket-same-line" "true"
-                                   "--arrow-parens" "always")))
-
+  :custom
+  (prettier-js-args '("--trailing-comma" "none"
+                      "--tab-width" "2"
+                      "--use-tabs" "false"
+                      "--bracket-spacing" "true"
+                      "--single-quote" "true"
+                      "--semi" "true"
+                      "--jsx-single-quote" "true"
+                      "--jsx-bracket-same-line" "true"
+                      "--arrow-parens" "always")))
 
 (use-package react-snippets
   :ensure t)
@@ -82,7 +76,8 @@
                                             (append flycheck-disabled-checkers
                                                     '(json-jsonlint)))))
   (add-hook 'rjsx-mode-hook 'emmet-mode)
-  (add-hook 'rjsx-mode-hook #'yas-minor-mode))
+  (add-hook 'rjsx-mode-hook #'yas-minor-mode)
+  (add-hook 'rjsx-mode-hook 'auto-complete-mode))
 
 (use-package js2-mode
   :ensure t
