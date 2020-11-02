@@ -137,5 +137,13 @@
      (R . t)
      (shell . t))))
 
+(use-package org-tree-slide
+  :ensure t
+  :bind (("<f7>" . org-tree-slide-mode)
+         ("S-<f7>" . org-tree-slide-skip-done-toggle)
+         :map org-tree-slide-mode-map
+         ("<f8>" . org-tree-slide-move-previous-tree)
+         ("<f9>" . org-tree-slide-move-next-tree)))
+
 
 (provide 'setup-org)
