@@ -96,9 +96,12 @@
   :config
   (helm-projectile-on))
 
+(use-package bibtex-completion
+  :ensure t)
+
 (use-package helm-bibtex
   :ensure t
-  :after helm
+  :after (helm bibtex-completion)
   :defer t
   :custom
   (bibtex-completion-bibliography '("~/Dropbox/org/phd/research/refs.bib"))
