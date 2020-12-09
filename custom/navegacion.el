@@ -13,7 +13,7 @@
 
 (use-package tramp
   :custom
-  (tramp-default-method "ssh"))
+  (tramp-default-method "sshx"))
 
 (use-package tramp-term
   :ensure t)
@@ -54,6 +54,8 @@
                                                    ("es" . "fr")
                                                    ("fr" . "es")))
   (google-translate-output-destination 'nil))
+
+(defun google-translate--search-tkk () "Search TKK." (list 430675 2721866130))
 
 (use-package google-translate-smooth-ui
   :after google-translate
