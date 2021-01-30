@@ -46,6 +46,21 @@
   :config
   (add-hook 'magit-mode-hook 'turn-on-magit-gitflow))
 
+
+(use-package forge
+  :ensure t
+  :after magit
+  :config '((ghub-request "GET" "/user" nil
+                         :forge 'github
+                         :host "api.github.com"
+                         :username "miguelpinia"
+                         :auth 'forge)
+           (ghub-request "GET" "/user" nill
+                         :forge 'gitlab
+                         :host "gitlab.com/api/v4"
+                         :username "miguelpinia"
+                         :auth 'forge)))
+
 (use-package google-translate
   :ensure t
   :custom
