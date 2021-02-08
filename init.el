@@ -31,8 +31,9 @@
 (load "navegacion.el")
 (load "setup-js.el")
 (load "setup-org.el")
-(load "terminal.el")
+;; (load "terminal.el")
 (load "latex-setup.el")
+(load "setup-md.el")
 (load "setup-py.el")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

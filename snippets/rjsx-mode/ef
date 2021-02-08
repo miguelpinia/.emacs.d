@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: effect
+# key: ef
+# --
+React.useEffect((${1:params}) =>{
+  $0
+});
