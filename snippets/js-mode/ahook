@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: async custom hook
+# key: ahook
+# --
+const $1 = async (${2:props}) => {
+  $0
+};
