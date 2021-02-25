@@ -1,7 +1,7 @@
 ;;; package --- Summary:
 ;;; Commentary:
 ;;; Code:
-(require 'tex-buf)
+(use-package tex-buf :ensure auctex)
 
 (use-package reftex
   :ensure t

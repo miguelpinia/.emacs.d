@@ -7,14 +7,12 @@
                          ("melpa" . "https://melpa.org/packages/")
                          ("org" . "http://orgmode.org/elpa/")
                          ("gnu" . "https://elpa.gnu.org/packages/")
-                         ("marmalade" . "http://marmalade-repo.org/packages/")
                          ("tromey" . "http://tromey.com/elpa/"))
-      package-archive-priorities '(("melpa-stable" . 100)
-                                   ("org" . 60)
-                                   ("melpa" . 60)
+      package-archive-priorities '(("org" . 100)
+                                   ("melpa" . 80)
+                                   ("melpa-stable" . 60)
                                    ("gnu" . 50)
-                                   ("tromey" . 30)
-                                   ("marmalade" . 20)))
+                                   ("tromey" . 30)))
 
 (package-initialize)
 (unless package-archive-contents
@@ -44,7 +42,7 @@
  '(org-agenda-files nil)
  '(package-selected-packages
    (quote
-    (forge elpy auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit auto-complete undo-tree isearch-dabbrev column-enforce-mode use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))))
+    (transient forge elpy auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit auto-complete undo-tree isearch-dabbrev column-enforce-mode use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
