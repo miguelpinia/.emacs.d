@@ -11,6 +11,7 @@
                        ("sek" "\\section{${1:name}}\n\n$0" "section" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/section" nil nil)
                        ("q" "\\question{$0}" "question" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/question" nil nil)
                        ("py" "\\lstset{language=python}\n\\begin[language=python]{lstlisting}\n$0\n\\end{lstlisting}" "python" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/python" nil nil)
+                       ("p" "\\paragraph{$1}$0" "paragraph" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/p" nil nil)
                        ("no" "\\note{$0}" "note" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/note" nil nil)
                        ("gl" "\\newglossaryentry{${1:AC}}{name=${2:Andrea Crotti}${3:, description=${4:description}}}" "newglossaryentry" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/newglossaryentry" nil nil)
                        ("cmd" "\\newcommand{\\\\${1:name}}${2:[${3:0}]}{$0}" "newcommand" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/newcommand" nil nil)
@@ -41,4 +42,4 @@
                        ("ac" "\\newacronym{${1:label}}{${1:$(upcase yas-text)}}{${2:Name}}" "acronym" nil nil nil "/home/miguel/.emacs.d/snippets/latex-mode/acronym" nil nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:19 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

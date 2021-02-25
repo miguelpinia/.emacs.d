@@ -7,4 +7,4 @@
                        ("ps" "$(patsubst ${1:from},${2:to},${3:src})" "patsubst" nil nil nil "/home/miguel/.emacs.d/snippets/makefile-gmake-mode/patsubst" nil nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:21 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

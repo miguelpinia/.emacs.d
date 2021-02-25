@@ -10,4 +10,4 @@
                        ("class" "class ${1:Class} {\n      $0\n}" "class" nil nil nil "/home/miguel/.emacs.d/snippets/groovy-mode/class" nil nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:17 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

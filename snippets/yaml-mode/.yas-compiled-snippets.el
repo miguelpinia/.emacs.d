@@ -7,4 +7,4 @@
                        ("entry" "${1:entry}: ${2:value}\n$0" "entry" nil nil nil "/home/miguel/.emacs.d/snippets/yaml-mode/entry" nil nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:26 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

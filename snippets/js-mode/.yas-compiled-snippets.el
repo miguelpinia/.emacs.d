@@ -28,7 +28,8 @@
                        ("apost" "await axios\n   .post(\n       $1\n   )\n   .then((response) => {\n       $2\n   })\n   .catch((err) => {\n       console.log(err);\n   });" "apost" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/apost" nil nil)
                        ("alam" "async ($1) => {\n  $0\n}" "Async function" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/alm" nil nil)
                        ("al" "alert($0);" "alert" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/al" nil nil)
+                       ("ahook" "const $1 = async (${2:props}) => {\n  $0\n};" "async custom hook" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/ahook" nil nil)
                        ("adelete" "await axios\n   .delete(\n       $1\n   )\n   .then(\n       $0\n   );" "" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/adelete" nil "adelete")))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:19 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

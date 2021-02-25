@@ -20,4 +20,4 @@
                        ("be" "begin;\nset client_encoding = 'utf-8';\n\n$0\n\ncommit;" "begin" nil nil nil "/home/miguel/.emacs.d/snippets/sql-mode/be" "direct-keybinding" nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:26 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

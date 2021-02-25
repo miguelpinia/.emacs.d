@@ -62,7 +62,6 @@
                        ("doc.file-scala" "/*                     __                                               *\\\n**     ________ ___   / /  ___     Scala $3                               **\n**    / __/ __// _ | / /  / _ |    (c) 2005-`(format-time-string \"%Y\")` , LAMP/EPFL             **\n**  __\\ \\/ /__/ __ |/ /__/ __ |    http://scala-lang.org/               **\n** /____/\\___/_/ |_/____/_/ | |                                         **\n**                          |/                                          **\n\\*                                                                      */\n/** \n * $0\n * @author ${1:name} \n * @version ${2:0.1}\n * $Id$\n */" "/** scala file */" nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/doc.file-scala" nil nil)
                        ("doc.file" "/**\n * `(scala-mode-file-doc)`\n * $0\n * @author ${1:name}\n * @version ${2:0.1} \n */" "/** file name */" nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/doc.file" nil nil)
                        ("doc" "/**\n * `(scala-mode-def-and-args-doc)`\n */" "/** method name */" nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/doc.def" nil nil)
-                       ("doc" "/**\n * `(scala-mode-find-clstrtobj-name-doc)`\n * ${1:description}\n * $0\n */" "/** cls/trt/obj name */" nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/doc.class" nil nil)
                        ("def" "def ${1:name} = $0" "def f = ..." nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/def.simple" nil nil)
                        ("def" "def ${1:name}: ${3:Unit} = {\n  $0\n}" "def f: R = {...}" nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/def.ret-body" nil nil)
                        ("def" "def ${1:name}: ${2:Unit} = $0" "def f: R = ..." nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/def.ret" nil nil)
@@ -100,4 +99,4 @@
                        ("act" "def act = {\n  loop {\n    react {\n      $0\n    }\n  }\n}\n" "def act = { ..}" nil nil nil "/home/miguel/.emacs.d/snippets/scala-mode/act" nil nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:25 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021

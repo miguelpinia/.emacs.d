@@ -15,4 +15,4 @@
                        ("case" "case ${1:var} of\n     ${2:cond} -> ${3:value}\n     $0\n     otherwise -> ${4:other}" "case" nil nil nil "/home/miguel/.emacs.d/snippets/haskell-mode/case" nil nil)))
 
 
-;;; Do not edit! File generated at Sun Sep 13 16:32:18 2020
+;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021
