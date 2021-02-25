@@ -1,6 +1,13 @@
 (require 'dired+)
+(require 'use-package)
 
 (use-package column-enforce-mode :ensure t)
+
+(use-package epa-file
+  :custom
+  (epa-file-select-keys nil)
+  (epa-file-encrypt-to '("miguel_pinia@ciencias.unam.mx"))
+  (password-cache-expiry (* 60 15)))
 
 (setq-default auto-save-default nil
               backup-directory-alist  `(("." . ,(concat user-emacs-directory "backups")))
