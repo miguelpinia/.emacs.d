@@ -92,7 +92,7 @@
           ("C-i" . helm-execute-persistent-action)
           ("C-z" . helm-select-action))
   :custom
-  (helm-split-window-in-side-p           t)
+  (helm-split-window-inside-p            t)
   (helm-move-to-line-cycle-in-source     t)
   (helm-ff-search-library-in-sexp        t)
   (helm-scroll-amount                    8)

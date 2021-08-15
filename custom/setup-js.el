@@ -4,6 +4,10 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (use-package tern :ensure t)
 
+(use-package restclient
+  :ensure t
+  :mode (("\\.http\\'" . restclient-mode)))
+
 (use-package js-react-redux-yasnippets
   :after yasnippet
   :ensure t)
@@ -39,7 +43,7 @@
   :ensure t
   :hook (rjsx-mode . prettier-js-mode)
   :custom
-  (prettier-js-args '("--trailing-comma" "none"
+  (prettier-js-args '("--trailing-comma" "es5"
                       "--tab-width" "2"
                       "--use-tabs" "false"
                       "--bracket-spacing" "true"
@@ -113,6 +117,9 @@
 
 
 (use-package js-import
+  :ensure t)
+
+(use-package npm
   :ensure t)
 
 (provide 'setup-js)

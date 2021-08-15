@@ -1,13 +1,42 @@
 ;;; package --- Summary:
 ;;; Commentary:
 ;;; Code:
+
+(defun mg-TeX-delete-current-macro (&optional arg)
+  "Remove the current macro.
+With an optional argument ARG, delete just the ARG-th macro
+starting from the innermost."
+  (interactive "*p")
+  (let (macro end)
+    (when
+    (dotimes (i arg macro)
+      (goto-char (TeX-find-macro-start))
+      (setq macro (TeX-current-macro)
+        end (TeX-find-macro-end))
+      ;; If we need to look for an outer macro we have to "exit" from the
+      ;; current one.
+      (backward-char))
+      ;; Return to the beginning of the macro to be deleted.
+      (forward-char)
+      (re-search-forward
+       (concat (regexp-quote TeX-esc) macro "\\(?:\\[[^]]*\\]\\)?"
+           TeX-grop "\\(\\(.\\|\n\\)*\\)")
+       end t)
+      (replace-match "\\1")
+      ;; Delete the closing brace.
+      (delete-backward-char 1))))
+
 (use-package tex-buf :ensure auctex)
 
 (use-package reftex
   :ensure t
   :defer t
+  :custom
+  (reftex-default-bibliography "~/Dropbox/org/phd/research/refs.bib")
+  (reftex-cite-prompt-optional-args t)
+  (reftex-plug-into-AUCTeX t)
   :config
-  (setq reftex-cite-prompt-optional-args t))
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
 (use-package tex
   :ensure auctex)
@@ -42,7 +71,8 @@
   ;; (add-hook 'LaTex-mode-hook 'pdf-tools-install)
   (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
         TeX-source-correlate-start-server t
-        TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sinc-view"))))
+        TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sinc-view")))
+  (define-key LaTeX-mode-map (kbd "C-c d") 'mg-TeX-delete-current-macro))
 
 (provide 'latex-setup)
 ;;; latex-setup.el ends here

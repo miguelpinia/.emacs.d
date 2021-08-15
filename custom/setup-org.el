@@ -3,6 +3,8 @@
 ;;;;;;;;;;;;;;;
 
 (use-package org-bullets :ensure t)
+(use-package ob-restclient :ensure t)
+(use-package ob-http :ensure t)
 
 (defvar my/org-basic-task-template
   "***** TODO %?
@@ -27,7 +29,7 @@
   :custom
   (org-hide-emphasis-markers t)
   (org-log-done t)
-  (org-directory "~/Dropbox/org")
+  (org-directory "~/Dropbox/org/")
   (org-confirm-babel-evaluate nil)
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
@@ -38,14 +40,14 @@
                    ("\\.mm\\'" . default)
                    ("\\.x?html?\\'" . default)
                    ("\\.pdf\\'" . (lambda (file link)
-                                    (org-pdfview-open link)))
+                                    (org-pdftools-open link)))
                    ("\\.djvu\\'" . "evince \"%s\"")
                    ("\\.djvu::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
                    (auto-mode . emacs)))
   (org-link-abbrev-alist '(("bib" . "~/Dropbox/org/phd/research/refs.bib::%s")
                            ("notes" . "~/Dropbox/org/doctorado.org::#%s")
                            ("papers" . "~/Dropbox/org/phd/research/papers/%s.pdf")))
-  (org-agenda-files '("~/Dropbox/org/agenda"))
+  (org-agenda-files '("~/Dropbox/org/agenda/"))
   (org-todo-keyword-faces '(("PREVERIFY" . "yellow")
                             ("FEEDBACK" . "yellow")
                             ("VERIFY" . "blue")
@@ -82,6 +84,7 @@
   (org-plantuml-jar-path (expand-file-name "~/plantuml.jar"))
   (org-mu4e-link-query-in-headers-mode nil)
   (org-mu4e-convert-to-html t)
+  (org-latex-pdf-process '("latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
   :init
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
@@ -135,7 +138,21 @@
      (C . t)
      (clojure . t)
      (R . t)
-     (shell . t))))
+     (shell . t)
+     (restclient . t)
+     (http . t))))
+
+(use-package org-ref
+  :ensure t
+  :after org
+  :demand t
+  :custom
+  (org-ref-default-bibliography '("~/Dropbox/org/phd/research/refs.bib"))
+  (org-ref-bibliography-notes "~/Dropbox/org/phd/research/notes/notes.org")
+  (org-ref-pdf-directory "~/Dropbox/org/phd/research/papers/")
+  :bind
+  (("C-c C-o" . org-ref-open-pdf-at-point)
+   ("C-c p" . helm-bibtex)))
 
 (use-package org-tree-slide
   :ensure t
