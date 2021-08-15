@@ -5,4 +5,4 @@
                      '(("fun" "function ()\n         ${1:return something}\nend" "fun" nil nil nil "/home/miguel/.emacs.d/snippets/lua-mode/fun" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021
+;;; Do not edit! File generated at Mon Aug  9 14:21:33 2021

@@ -32,4 +32,4 @@
                        ("adelete" "await axios\n   .delete(\n       $1\n   )\n   .then(\n       $0\n   );" "" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/adelete" nil "adelete")))
 
 
-;;; Do not edit! File generated at Wed Feb 17 09:58:07 2021
+;;; Do not edit! File generated at Mon Aug  9 14:21:33 2021

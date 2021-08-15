@@ -18,4 +18,4 @@
                        ("min" "cmake_minimum_required(VERSION ${1:2.6})" "cmake_minimum_required" nil nil nil "/home/miguel/.emacs.d/snippets/cmake-mode/cmake_minimum_required" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Feb 17 09:58:06 2021
+;;; Do not edit! File generated at Mon Aug  9 14:21:32 2021

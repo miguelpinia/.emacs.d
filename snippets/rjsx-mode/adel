@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: adel
+# key: adel
+# --
+axios.delete(${1:\`\${backend()\}/\`, {
+  params: \{id: id\}
+}})$0

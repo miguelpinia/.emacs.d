@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: group
+# key: group
+# --
+console.group('${1:Datos}');
+console.log(${2:state});
+console.groupEnd();

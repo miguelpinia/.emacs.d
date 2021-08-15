@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: try
+# key: try
+# --
+try {
+  $1
+} catch (error) {
+  console.log('Error', error.response.data?.message || error);
+} finally {
+  $0
+}
