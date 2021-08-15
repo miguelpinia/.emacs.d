@@ -1,6 +1,11 @@
 (require 'dired+)
 (require 'use-package)
 
+;; (use-package power-mode
+;;   :load-path "~/.emacs.d/site-lisp/power-mode.el"
+;;   :init
+;;   (add-hook 'after-init-hook #'power-mode))
+
 (use-package column-enforce-mode :ensure t)
 
 (use-package epa-file
@@ -48,6 +53,8 @@
 (add-hook 'python-mode-hook 'column-enforce-mode)
 (add-hook 'java-mode-hook 'column-enforce-mode)
 (add-hook 'cc-mode-hook 'column-enforce-mode)
+(add-hook 'prog-mode-hook '(lambda () (linum-mode)
+                             (setq linum-format "%4d \u2502 ")))
 
 (global-unset-key (kbd "C-,"))
 (global-set-key (kbd "C-,") 'comment-region)
