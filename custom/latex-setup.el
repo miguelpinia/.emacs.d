@@ -46,6 +46,7 @@ starting from the innermost."
   :mode ("\\.tex\\'" . latex-mode)
   :custom (TeX-auto-save t)
   (TeX-parse-self t)
+  (TeX-source-correlate-mode t)
   :config
   (setq-default TeX-master nil)
   (add-hook 'LaTeX-mode-hook 'rainbow-delimiters-mode)
@@ -69,10 +70,15 @@ starting from the innermost."
   ;; (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
   ;;           #'TeX-revert-document-buffer)
   ;; (add-hook 'LaTex-mode-hook 'pdf-tools-install)
-  (setq TeX-view-program-selection '((output-pdf "pdf-tools"))
+  (setq TeX-view-program-selection '((output-pdf "pdf-tools")
+                                     (output-pdf "Evince"))
         TeX-source-correlate-start-server t
-        TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sinc-view")))
+        TeX-view-program-list '(("pdf-tools" TeX-pdf-tools-sync-view)
+                                ("Evince" "evince --page-index=%(outpage) %o"))
+        TeX-source-correlate-method '((dvi . source-specials)
+                                      (pdf . synctex)))
   (define-key LaTeX-mode-map (kbd "C-c d") 'mg-TeX-delete-current-macro))
+
 
 (provide 'latex-setup)
 ;;; latex-setup.el ends here

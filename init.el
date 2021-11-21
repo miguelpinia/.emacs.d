@@ -35,6 +35,7 @@
 (load "setup-md.el")
 (load "setup-py.el")
 (load "setup-php.el")
+(load "setup-clj.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -44,8 +45,12 @@
  '(elpy-shell-use-project-root t)
  '(org-agenda-files
    '("~/Dropbox/org/phd/research/notes/queues.org" "/home/miguel/Dropbox/org/agenda/doctorado.org" "/home/miguel/Dropbox/org/agenda/interesante.org" "/home/miguel/Dropbox/org/agenda/prepa.org" "/home/miguel/Dropbox/org/agenda/tareas.org") nil nil "Customized with use-package org")
+ '(org-format-latex-options
+   '(:foreground default :background default :scale 2.5 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
+                 ("begin" "$1" "$" "$$" "\\(" "\\[")))
+ '(org-image-actual-width '(300))
  '(package-selected-packages
-   '(ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref transient forge elpy auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit auto-complete undo-tree isearch-dabbrev column-enforce-mode use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired)))
+   '(clj-refactor ac-cider helm-bufler bufler ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref transient forge elpy auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit auto-complete undo-tree isearch-dabbrev column-enforce-mode use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
