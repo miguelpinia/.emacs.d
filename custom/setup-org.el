@@ -5,6 +5,7 @@
 (use-package org-bullets :ensure t)
 (use-package ob-restclient :ensure t)
 (use-package ob-http :ensure t)
+(use-package plantuml-mode :ensure t)
 
 (defvar my/org-basic-task-template
   "***** TODO %?
@@ -89,6 +90,7 @@
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
   (defun my-org-hooks ()
     "My hooks for org mode."
     (yas-minor-mode 1)
