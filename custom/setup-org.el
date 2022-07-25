@@ -82,7 +82,7 @@
                              (file+olp ,(concat org-directory "agenda/organizador.org") "Notas")
                              "| %u | %^{Note} |"
                              :immediate-finish t)))
-  (org-plantuml-jar-path (expand-file-name "~/plantuml.jar"))
+  (org-plantuml-jar-path (expand-file-name "~/bin/plantuml.jar"))
   (org-mu4e-link-query-in-headers-mode nil)
   (org-mu4e-convert-to-html t)
   (org-latex-pdf-process '("latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))

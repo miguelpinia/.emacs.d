@@ -16,6 +16,7 @@
   (projectile-indexing-method 'native)
   (projectile-enable-caching t)
   (projectile-completion-system 'helm)
+  (projectile-project-root-files #'(".projectile"))
   :config
   (projectile-global-mode))
 

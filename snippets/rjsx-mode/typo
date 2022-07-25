@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: typo
+# key: typo
+# --
+<Typography variant='${1:body1}'>
+  $0
+</Typography>

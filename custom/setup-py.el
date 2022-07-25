@@ -2,18 +2,18 @@
 ;;; Commentary:
 ;;; Code:
 
-;; (use-package python
-;;   :mode ("\\.py\\'" . python-mode)
-;;   :custom
-;;   (python-shell-interpreter "/usr/bin/python3"))
-
-(use-package elpy
-  :ensure t
-  :init (elpy-enable)
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
   :custom
-  (elpy-rpc-python-command "python3")
-  (elpy-rpc-timeout 2)
-  (elpy-shell-echo-output nil))
+  (python-shell-interpreter "/usr/bin/python3"))
+
+;; (use-package elpy
+;;   :ensure t
+;;   :init (elpy-enable)
+;;   :custom
+;;   (elpy-rpc-python-command "python3")
+;;   (elpy-rpc-timeout 2)
+;;   (elpy-shell-echo-output nil))
 
 ;; (use-package pyenv
 ;;   :ensure t

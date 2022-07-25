@@ -57,7 +57,8 @@
   :ensure t)
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :init (global-flycheck-mode t))
 
 (use-package emmet-mode
   :ensure t

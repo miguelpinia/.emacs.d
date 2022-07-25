@@ -28,8 +28,7 @@
 
 (use-package ibuffer
   :custom
-  (ibuffer-default-sorting-mode 'major-mode)
-  :bind ("C-x C-b" . ibuffer))
+  (ibuffer-default-sorting-mode 'major-mode))
 
 (use-package magit
   :ensure t
@@ -277,5 +276,14 @@
   (yas-global-mode))
 
 (use-package ag :ensure t)
+
+(use-package bufler
+  :ensure t
+  :bind ("C-x C-b" . bufler))
+
+(use-package helm-bufler
+  :ensure t
+  :defer t)
+
 (provide 'navegacion)
 ;;; navegacion.el ends here

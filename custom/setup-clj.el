@@ -81,7 +81,7 @@
   :ensure t)
 
 (eval-when-compile
-   (require 'cl))
+   (require 'cl-lib))
 
 (use-package ac-cider
   :ensure t
