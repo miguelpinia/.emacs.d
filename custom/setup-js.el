@@ -1,8 +1,43 @@
-(use-package tide :ensure t)
-;;;;;;;;;;;;;;;;;;;;;;;;
-;; sudo npm i -g tern ;;
-;;;;;;;;;;;;;;;;;;;;;;;;
-(use-package tern :ensure t)
+;;; package --- summary
+;;; commentary:
+;;; code:
+
+(use-package js
+  :custom
+  (indent-tabs-mode nil)
+  (js-indent-level 2)
+  (js2-global-externs '("module" "require" "assert" "setInterval" "console" "__dirname__"))
+  (js2-basic-offsets 2))
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode t))
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(use-package typescript-mode :ensure t)
+
+(use-package tide :ensure t
+  :after (typescript-mode company flycheck)
+  :custom (company-tooltip-align-annotations t))
+
+(defun tide-setup-mode ()
+    (interactive)
+    (tide-setup)
+    (flycheck-mode +1)
+    (setq flycheck-check-syntax-automatically '(save mode-enabled))
+    (eldoc-mode +1)
+    (tide-hl-identifier-mode +1)
+    (setq tide-format-options
+          '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
+            :placeOpenBraceOnNewLineForFunctions nil)))
+
+(add-hook 'js-mode-hook 'tide-setup-mode)
+(add-hook 'js-mode-hook 'tide-hl-identifier-mode)
+;; (add-hook 'before-save-hook 'tide-format-before-save)
+
+;; (flycheck-add-mode 'javascript-eslint 'web-mode)
+(setq flycheck-javascript-eslint-executable "/usr/bin/eslint")
 
 (use-package restclient
   :ensure t
@@ -12,36 +47,14 @@
   :after yasnippet
   :ensure t)
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-(use-package css-mode
-  :ensure t
-  :mode "\\.css\\'"
-  :custom
-  (css-indent-offset 2)
-  (flycheck-stylelintrc "~/.stylelintrc")
-  :hook (css-mode-hook . (lambda ()
-                           (add-to-list (make-local-variable 'company-backends)
-                                        '(company-css company-files company-capf)))))
-
-(add-hook 'js-mode-hook #'setup-tide-mode)
-(setq flycheck-javascript-eslint-executable "/usr/bin/eslint")
-
-
-(defun setup-tide-mode ()
-  "Setup function for tide."
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  (setq tide-format-options '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
-                              :placeOpenBraceOnNewLineForFunctions nil)))
+(use-package react-snippets
+  :after yasnippet
+  :ensure t)
 
 (use-package prettier-js
   :ensure t
   :hook (rjsx-mode . prettier-js-mode)
+  (js-mode . prettier-js-mode)
   :custom
   (prettier-js-args '("--trailing-comma" "es5"
                       "--tab-width" "2"
@@ -53,19 +66,31 @@
                       "--jsx-bracket-same-line" "true"
                       "--arrow-parens" "always")))
 
-(use-package react-snippets
-  :ensure t)
-
-(use-package flycheck
+(use-package css-mode
   :ensure t
-  :init (global-flycheck-mode t))
+  :mode "\\.css\\'"
+  :custom
+  (css-indent-offset 2)
+  (flycheck-stylelintrc "~/.stylelintrc")
+  :hook (css-mode-hook . (lambda ()
+                           (add-to-list (make-local-variable 'company-backends)
+                                        '(company-css company-files company-capf)))))
 
 (use-package emmet-mode
   :ensure t
+  :hook (web-mode
+         css-mode
+         scss-mode
+         sgml-mode
+         rjsx-mode
+         js-mode)
   :custom
+  (emmet-indent-after-insert t)
   (emmet-move-cursor-between-quotes t)
   (emmet-expand-jsx-className t)
-  (emmet-preview-default t))
+  (emmet-preview-default t)
+  :config
+  (add-to-list 'emmet-jsx-major-modes 'js-mode))
 
 (use-package rjsx-mode
   :ensure t
@@ -84,43 +109,22 @@
   (add-hook 'rjsx-mode-hook #'yas-minor-mode)
   (add-hook 'rjsx-mode-hook 'auto-complete-mode))
 
-(use-package js2-mode
-  :ensure t
-  :init
-  (add-hook 'js2-mode-hook #'setup-tide-mode)
-  (add-hook 'js2-mode-hook (lambda () (tern-mode t)))
-  :custom
-  (indent-tabs-mode nil)
-  (js2-basic-offsets 2)
-  (js-indent-level 2)
-  (js2-global-externs '("module" "require" "assert" "setInterval" "console" "__dirname__")))
 
-(use-package emmet-mode
-  :ensure t
-  :hook (web-mode
-         css-mode
-         scss-mode
-         sgml-mode
-         rjsx-mode)
-  :custom
-  (emmet-indent-after-insert t)
-  (emmet-move-cursor-between-quotes t)
-  (emmet-expand-jsx-className t)
-  (emmet-preview-default t))
 
 (use-package mode-local
   :ensure t
   :config
   (require 'emmet-mode)
-  (setq-mode-local rjsx-mode emmet-expand-jsx-className t)
+  (setq-mode-local js-mode emmet-expand-jsx-className t)
   (setq-mode-local web-mode emmet-expand-jsx-className nil))
 
 
 
-(use-package js-import
+(use-package dockerfile-mode
   :ensure t)
 
-(use-package npm
+(use-package docker-compose-mode
   :ensure t)
 
 (provide 'setup-js)
+;;; setup-js.el ends here
