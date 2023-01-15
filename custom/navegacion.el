@@ -7,7 +7,7 @@
 (global-unset-key (kbd "C-z"))
 (global-unset-key (kbd "C-x C-z"))
 (global-set-key (kbd "C-<f10>") 'menu-bar-mode)
-(global-set-key (kbd "C-c C-t") 'ansi-term)
+(global-set-key (kbd "C-c C-t") 'vterm)
 (fset 'yes-or-no-p 'y-or-n-p)
 
 
@@ -61,19 +61,21 @@
                          :auth 'forge)))
 
 (use-package google-translate
-  :ensure t
-  :custom
-  (google-translate-translation-directions-alist '(("es" . "en")
-                                                   ("en" . "es")
-                                                   ("es" . "fr")
-                                                   ("fr" . "es")))
-  (google-translate-output-destination 'nil))
+  :ensure t)
 
 (defun google-translate--search-tkk () "Search TKK." (list 430675 2721866130))
 
 (use-package google-translate-smooth-ui
   :after google-translate
   :defer t
+  :custom
+  (google-translate-translation-directions-alist '(("es" . "en")
+                                                   ("en" . "es")
+                                                   ("es" . "fr")
+                                                   ("fr" . "es")))
+  (google-translate-show-phonetict t)
+  (google-translate-output-destination 'nil)
+  (google-translate-listen-program "mplayer")
   :bind ("C-c t" . google-translate-smooth-translate))
 
 
@@ -284,6 +286,17 @@
 (use-package helm-bufler
   :ensure t
   :defer t)
+
+(use-package fzf
+  :ensure t
+  :defer t
+  :config
+  (setq fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll"
+        fzf/executable "fzf"
+        fzf/git-grep-args "-i --line-number %s"
+        fzf/grep-command "grep -nrH"
+        fzf/position-bottom t
+        fzf/window-height 15))
 
 (provide 'navegacion)
 ;;; navegacion.el ends here
