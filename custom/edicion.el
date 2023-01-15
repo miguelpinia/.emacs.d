@@ -1,4 +1,4 @@
-(require 'dired+)
+;;(require 'dired+)
 (require 'use-package)
 
 ;; (use-package power-mode
@@ -86,7 +86,9 @@
   :ensure t
   :config
   (global-undo-tree-mode)
-  (global-set-key (kbd "C-c _") 'undo-tree-visualize))
+  (global-set-key (kbd "C-c _") 'undo-tree-visualize)
+  :custom
+  (undo-tree-auto-save-history nil))
 
 
 (use-package auto-complete
@@ -108,11 +110,11 @@
           emacs-lisp-mode) . enable-paredit-mode))
 
 (use-package smartparens-config
-    :ensure smartparens
-    :config
-    (progn
-      (show-smartparens-global-mode t))
-    :hook ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
+  :ensure smartparens
+  :config
+  (progn
+    (show-smartparens-global-mode t))
+  :hook ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
 
 (defmacro def-pairs (pairs)
   "Foo PAIRS."
@@ -213,8 +215,8 @@
 
 
 
-(define-key dired-mode-map "Y" 'ora-dired-rsync)
-(diredp-toggle-find-file-reuse-dir t)
+;; (define-key dired-mode-map "Y" 'ora-dired-rsync)
+;; (diredp-toggle-find-file-reuse-dir t)
 
 (use-package dired-isearch
   :ensure t
@@ -223,6 +225,15 @@
   (define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
   (define-key dired-mode-map (kbd "ESC C-s") 'dired-isearch-forward-regexp)
   (define-key dired-mode-map (kbd "ESC C-r") 'dired-isearch-backward-regexp))
+
+(use-package dired-git-info
+  :ensure t
+  :after dired
+  :custom
+  (dgi-auto-hide-details-p nil)
+  :config
+  (define-key dired-mode-map ")" 'dired-git-info-mode)
+  (add-hook 'dired-after-readin-hook 'dired-git-info-auto-enable))
 
 ;; (autoload 'cider--make-result-overlay "cider-overlays")
 ;; (defun endless/eval-overlay (value point)
