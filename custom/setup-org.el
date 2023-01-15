@@ -35,8 +35,10 @@
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
   (org-ellipsis "▼")
+  (org-image-actual-width nil)
   (org-babel-clojure-backend 'cider)
   (org-hide-emphasis-markers t)
+  (org-adapt-indentation t)
   (org-file-apps '(("\\.docx\\'" . default)
                    ("\\.mm\\'" . default)
                    ("\\.x?html?\\'" . default)
@@ -128,6 +130,7 @@
               (?h . "*** %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
     (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
     (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
+
   :config
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -142,7 +145,10 @@
      (R . t)
      (shell . t)
      (restclient . t)
-     (http . t))))
+     (http . t)
+     (emacs-lisp . t))))
+
+
 
 (use-package org-ref
   :ensure t
