@@ -3,9 +3,10 @@
 (defconst package-init-time (emacs-init-time)
   "Record down the package initialize time.")
 
-(use-package all-the-icons)
+(use-package all-the-icons :ensure t)
 
 (use-package all-the-icons-dired
+  :after all-the-icons
   :ensure t
   :defer t
   :hook
@@ -25,7 +26,7 @@
   :custom
   (dashboard-banner-logo-title "[D I D D Y • E M A C S]")
   (dashboard-footer-icon "")
-  (dashboard-footer "╬ Copyright © 2020 Miguel Piña ╬")
+  (dashboard-footer "╬ Copyright © 2023 Miguel Piña ╬")
   (dashboard-center-content t)
   (dashboard-set-navigator t)
   (dashboard-startup-banner 'logo)
@@ -106,6 +107,8 @@
 (use-package anzu
   :ensure t
   :config (global-anzu-mode))
+
+;; Setup para eliminar mode-line
 
 (defun mode-line-render (left right)
   "Return a string of `window-width' length containing left, and
@@ -196,7 +199,6 @@ Note the weekly scope of the command's precision.")
             (propertize " "
                         'display `((space :align-to (- right ,reserve))))
             right)))
-
 
 
 (defvar-local mood-line--vc-text nil)
@@ -335,6 +337,8 @@ Note the weekly scope of the command's precision.")
 (set-face-attribute 'mode-line-buffer-id nil
                     :weight 'light)
 
+;; setup
+
 (use-package olivetti :ensure t
   :custom
   (olivetti-body-width 120))
@@ -399,5 +403,8 @@ Note the weekly scope of the command's precision.")
 (global-prettify-symbols-mode 1)
 
 (setq org-hide-emphasis-markers t)
+
+;; (set-frame-parameter (selected-frame) 'alpha '(92 . 50))
+;; (add-to-list 'default-frame-alist '(alpha . (92 . 50)))
 
 (provide 'ui)
