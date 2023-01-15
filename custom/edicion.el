@@ -120,14 +120,14 @@
   "Foo PAIRS."
   `(progn
      ,@(cl-loop for (key . val) in pairs
-          collect
-            `(defun ,(read (concat
-                            "wrap-with-"
-                            (prin1-to-string key)
-                            "s"))
-                 (&optional arg)
-               (interactive "p")
-               (sp-wrap-with-pair ,val)))))
+                collect
+                `(defun ,(read (concat
+                                "wrap-with-"
+                                (prin1-to-string key)
+                                "s"))
+                     (&optional arg)
+                   (interactive "p")
+                   (sp-wrap-with-pair ,val)))))
 
 
 (def-pairs ((paren        . "(")
@@ -177,9 +177,9 @@
 
 (defun insdate-insert-current-date (&optional omit-day-of-week-p)
   "Insert today's date using the current locale with a OMIT-DAY-OF-WEEK-P,the date is inserted without the day of the week."
-    (interactive "P*")
-    (insert (calendar-date-string (calendar-current-date) nil
-                                  omit-day-of-week-p)))
+  (interactive "P*")
+  (insert (calendar-date-string (calendar-current-date) nil
+                                omit-day-of-week-p)))
 
 (global-set-key "\C-x\M-d" `insdate-insert-current-date)
 
@@ -235,28 +235,28 @@
   (define-key dired-mode-map ")" 'dired-git-info-mode)
   (add-hook 'dired-after-readin-hook 'dired-git-info-auto-enable))
 
-;; (autoload 'cider--make-result-overlay "cider-overlays")
-;; (defun endless/eval-overlay (value point)
-;;   "Eval overlay VALUE POINT."
-;;   (cider--make-result-overlay (format "%S" value)
-;;     :where point
-;;     :duration 'command)
-;;   value)
-;; (advice-add 'eval-region :around
-;;             (lambda (f beg end &rest r)
-;;               (endless/eval-overlay
-;;                (apply f beg end r)
-;;                end)))
-;; (advice-add 'eval-last-sexp :filter-return
-;;             (lambda (r)
-;;               (endless/eval-overlay r (point))))
-;; (advice-add 'eval-defun :filter-return
-;;             (lambda (r)
-;;               (endless/eval-overlay
-;;                r
-;;                (save-excursion
-;;                  (end-of-defun)
-;;                  (point)))))
+(autoload 'cider--make-result-overlay "cider-overlays")
+(defun endless/eval-overlay (value point)
+  "Eval overlay VALUE POINT."
+  (cider--make-result-overlay (format "%S" value)
+    :where point
+    :duration 'command)
+  value)
+(advice-add 'eval-region :around
+            (lambda (f beg end &rest r)
+              (endless/eval-overlay
+               (apply f beg end r)
+               end)))
+(advice-add 'eval-last-sexp :filter-return
+            (lambda (r)
+              (endless/eval-overlay r (point))))
+(advice-add 'eval-defun :filter-return
+            (lambda (r)
+              (endless/eval-overlay
+               r
+               (save-excursion
+                 (end-of-defun)
+                 (point)))))
 
 (add-hook 'pdf-view-mode-hook 'auto-revert-mode)
 
