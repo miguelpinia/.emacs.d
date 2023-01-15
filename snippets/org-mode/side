@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: side
+# key: side
+# --
+#+begin_abmn
+$0
+#+end_abmn

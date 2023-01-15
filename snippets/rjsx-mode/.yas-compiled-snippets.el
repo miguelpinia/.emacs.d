@@ -2,7 +2,8 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'rjsx-mode
-                     '(("try" "try {\n  $1\n} catch (error) {\n  console.log('Error', error.response.data?.message || error);\n} finally {\n  $0\n}" "try" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/try" nil nil)
+                     '(("typo" "<Typography variant='${1:body1}'>\n  $0\n</Typography>" "typo" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/typo" nil nil)
+                       ("try" "try {\n  $1\n} catch (error) {\n  console.log('Error', error.response.data?.message || error);\n} finally {\n  $0\n}" "try" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/try" nil nil)
                        ("item" "<Grid item xs={12}>\n  $0\n</Grid>" "item" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/item" nil nil)
                        ("hook" "const $1 = ($2) => {\n  $0\n};" "hook" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/hook" nil nil)
                        ("group" "console.group('${1:Datos}');\nconsole.log(${2:state});\nconsole.groupEnd();" "group" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/group" nil nil)
@@ -15,4 +16,4 @@
                        ("Frag" "<React.Fragment $0/>" "Frag" nil nil nil "/home/miguel/.emacs.d/snippets/rjsx-mode/Frag" nil nil)))
 
 
-;;; Do not edit! File generated at Mon Aug  9 14:21:33 2021
+;;; Do not edit! File generated at Wed Jan 11 13:04:49 2023

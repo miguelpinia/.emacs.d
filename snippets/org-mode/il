@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: insert latex
+# key: il
+# --
+\($0\)

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: affir
+# key: affir
+# --
+#+begin_affirmation
+$0
+#+end_affirmation
