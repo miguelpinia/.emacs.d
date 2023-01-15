@@ -26,7 +26,10 @@ starting from the innermost."
       ;; Delete the closing brace.
       (delete-backward-char 1))))
 
-(use-package tex-buf :ensure auctex)
+
+(use-package tex :ensure auctex)
+
+(require 'tex)
 
 (use-package reftex
   :ensure t
@@ -43,6 +46,7 @@ starting from the innermost."
 
 (use-package tex-site
   :ensure auctex
+  :after tex-mode
   :mode ("\\.tex\\'" . latex-mode)
   :custom (TeX-auto-save t)
   (TeX-parse-self t)
@@ -77,8 +81,7 @@ starting from the innermost."
                                 ("Evince" "evince --page-index=%(outpage) %o"))
         TeX-source-correlate-method '((dvi . source-specials)
                                       (pdf . synctex)))
-  (define-key LaTeX-mode-map (kbd "C-c d") 'mg-TeX-delete-current-macro))
-
+  (define-key latex-mode-map (kbd "C-c d") 'mg-TeX-delete-current-macro))
 
 (provide 'latex-setup)
 ;;; latex-setup.el ends here
