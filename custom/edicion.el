@@ -1,5 +1,9 @@
+;;; package --- summary
+;;; Commentary:
+;;; Code:
 ;;(require 'dired+)
 (require 'use-package)
+(require 'linum)
 
 ;; (use-package power-mode
 ;;   :load-path "~/.emacs.d/site-lisp/power-mode.el"
@@ -44,6 +48,7 @@
     "Muestra los espacios en blanco al final de cada linea."
     (interactive)
     (setq show-trailing-whitespace t))
+
 (add-hook 'LaTeX-mode-hook 'trailing-whitespaces)
 (add-hook 'python-mode-hook 'trailing-whitespaces)
 (add-hook 'cc-mode-hook  'trailing-whitespaces)
@@ -53,8 +58,8 @@
 (add-hook 'python-mode-hook 'column-enforce-mode)
 (add-hook 'java-mode-hook 'column-enforce-mode)
 (add-hook 'cc-mode-hook 'column-enforce-mode)
-(add-hook 'prog-mode-hook '(lambda () (linum-mode)
-                             (setq linum-format "%4d \u2502 ")))
+(add-hook 'prog-mode-hook #'(lambda () (linum-mode)
+                              (setq linum-format "%4d \u2502 ")))
 
 (global-unset-key (kbd "C-,"))
 (global-set-key (kbd "C-,") 'comment-region)
@@ -66,13 +71,13 @@
              'write-file-functions
              'delete-trailing-whitespace
              'delete-blank-lines)))
+
 (add-hook 'LaTeX-mode-hook
           (lambda ()
             (add-to-list
              'write-file-functions
              'delete-trailing-whitespace
              'delete-blank-lines)))
-
 
 (use-package isearch-dabbrev
   :ensure t
@@ -91,14 +96,28 @@
   (undo-tree-auto-save-history nil))
 
 
-(use-package auto-complete
+;; (use-package auto-complete
+;;   :ensure t
+;;   :custom
+;;   (ac-delay 0.5)
+;;   :init
+;;   (progn
+;;     (ac-config-default)
+;;     (global-auto-complete-mode t)))
+
+(use-package company
   :ensure t
-  :custom
-  (ac-delay 0.5)
   :init
-  (progn
-    (ac-config-default)
-    (global-auto-complete-mode t)))
+  (add-hook 'after-init-hook 'global-company-mode)
+  :custom
+  (company-idle-delay 0)
+  (company-echo-delay 0)
+  (company-show-numbers nil)
+  (company-require-match nil)
+  (company-tooltip-align-annotations t)
+  (company-minimum-prefix-lenghth 0)
+  ;; (company-backends '(company-capf))
+  (company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend)))
 
 (use-package paredit
   :ensure t
@@ -115,6 +134,8 @@
   (progn
     (show-smartparens-global-mode t))
   :hook ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
+
+(require 'smartparens)
 
 (defmacro def-pairs (pairs)
   "Foo PAIRS."
@@ -133,6 +154,7 @@
 (def-pairs ((paren        . "(")
             (bracket      . "[")
             (brace        . "{")
+            (underscore   . "_")
             (single-quote . "'")
             (double-quote . "\"")
             (back-quote   . "`")))
@@ -160,7 +182,6 @@
  ("C-k"   . sp-kill-hybrid-sexp)
  ("M-k"   . sp-backward-kill-sexp)
  ("C-M-w" . sp-copy-sexp)
- ("C-M-d" . delete-sexp)
  ("M-<backspace>" . backward-kill-word)
  ("C-<backspace>" . sp-backward-kill-word)
  ([remap sp-backward-kill-word] . backward-kill-word)
@@ -175,48 +196,16 @@
  ("C-c _"  . wrap-with-underscores)
  ("C-c `"  . wrap-with-back-quotes))
 
+(require 'calendar)
+
 (defun insdate-insert-current-date (&optional omit-day-of-week-p)
-  "Insert today's date using the current locale with a OMIT-DAY-OF-WEEK-P,the date is inserted without the day of the week."
+  "Insert today's date using the current locale with a OMIT-DAY-OF-WEEK-P.
+The date is inserted without the day of the week."
   (interactive "P*")
   (insert (calendar-date-string (calendar-current-date) nil
                                 omit-day-of-week-p)))
 
 (global-set-key "\C-x\M-d" `insdate-insert-current-date)
-
-(defun ora-dired-rsync (dest)
-  "Whatever DEST."
-  (interactive
-   (list
-    (expand-file-name
-     (read-file-name
-      "Rsync to:"
-      (dired-dwim-target-directory)))))
-  ;; store all selected files into "files" list
-  (let ((files (dired-get-marked-files
-                nil current-prefix-arg))
-        ;; the rsync command
-        (tmtxt/rsync-command
-         "rsync -arvz --progress "))
-    ;; add all selected file names as arguments
-    ;; to the rsync command
-    (dolist (file files)
-      (setq tmtxt/rsync-command
-            (concat tmtxt/rsync-command
-                    (shell-quote-argument file)
-                    " ")))
-    ;; append the destination
-    (setq tmtxt/rsync-command
-          (concat tmtxt/rsync-command
-                  (shell-quote-argument dest)))
-    ;; run the async shell command
-    (async-shell-command tmtxt/rsync-command "*rsync*")
-    ;; finally, switch to that window
-    (other-window 1)))
-
-
-
-;; (define-key dired-mode-map "Y" 'ora-dired-rsync)
-;; (diredp-toggle-find-file-reuse-dir t)
 
 (use-package dired-isearch
   :ensure t
@@ -232,7 +221,7 @@
   :custom
   (dgi-auto-hide-details-p nil)
   :config
-  (define-key dired-mode-map ")" 'dired-git-info-mode)
+  (define-key dired-mode-map ")" 'dired-gipt-info-mode)
   (add-hook 'dired-after-readin-hook 'dired-git-info-auto-enable))
 
 (autoload 'cider--make-result-overlay "cider-overlays")
@@ -260,4 +249,29 @@
 
 (add-hook 'pdf-view-mode-hook 'auto-revert-mode)
 
+(use-package which-key :ensure t :config (which-key-mode))
+
+;; (use-package dap-chrome :ensure t)
+
+(setq gc-cons-threshold (* 100 1024 1024)
+      read-process-output-max (* 1024 1024)
+      create-lockfiles nil)
+
+(require 'ansi-color)
+
+(add-hook 'compilation-filter-hook
+          (lambda () (ansi-color-apply-on-region (point-min) (point-max))))
+
+(defun unfill-paragraph (&optional region)
+  "Takes a multi-line paragraph and makes it into a single line of text."
+  (interactive (progn (barf-if-buffer-read-only) '(t)))
+  (let ((fill-column (point-max))
+        ;; This would override `fill-column' if it's an integer.
+        (emacs-lisp-docstring-fill-column t))
+    (fill-paragraph nil region)))
+
+    ;; Handy key definition
+(define-key global-map "\M-Q" 'unfill-paragraph)
+
 (provide 'edicion)
+;;; edicion.el ends here

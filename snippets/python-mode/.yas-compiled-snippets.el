@@ -22,7 +22,7 @@
       (mapconcat 'identity (list "Keyword Arguments:" formatted-args) indent))))
 
 (add-hook 'python-mode-hook
-          '(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))
+          #'(lambda () (set (make-local-variable 'yas-indent-line) 'fixed)))
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'python-mode
@@ -223,4 +223,4 @@
                         nil "/home/miguel/.emacs.d/snippets/python-mode/__contains__" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Jan 11 13:04:49 2023
+;;; Do not edit! File generated at Tue Oct 24 21:20:12 2023

@@ -30,7 +30,8 @@
 
 (use-package pyvenv-auto
   :ensure t
-  :init (pyvenv-auto-mode t)
+  ;; :init (pyvenv-auto-mode t)
+  :hook ((python-mode . pyvenv-auto-run))
   :custom
   (pyvenv-auto-venv-dirnames '("venv" ".venv" ".env")))
 

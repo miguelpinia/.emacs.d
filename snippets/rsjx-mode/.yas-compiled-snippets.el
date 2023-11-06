@@ -5,4 +5,4 @@
                      '(("immc" "import ${1:Object} from '@material-ui/core/$1'`(if (eolp) (js-react-redux-yasnippets-semicolon))`" "Import from @material-ui/core" nil nil nil "/home/miguel/.emacs.d/snippets/rsjx-mode/immc" nil "immc")))
 
 
-;;; Do not edit! File generated at Wed Jan 11 13:04:49 2023
+;;; Do not edit! File generated at Tue Oct 24 21:20:12 2023

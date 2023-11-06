@@ -22,7 +22,7 @@
   :config
   (require 'flycheck-clj-kondo)
   (add-hook 'clojure-mode-hook 'enable-paredit-mode)
-  (add-hook 'clojure-mode-hook 'auto-complete-mode)
+  (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'clojure-mode-hook 'subword-mode)
   (add-hook 'clojure-mode-hook (lambda ()
                                  (setq inferior-lisp-program "lein repl")
@@ -35,7 +35,7 @@
                                  (define-clojure-indent (fact 1))
                                  (define-clojure-indent (facts 1))))
   (add-hook 'clojurescript-mode-hook 'enable-paredit-mode)
-  (add-hook 'clojurescript-mode-hook 'auto-complete-mode)
+  (add-hook 'clojurescript-mode-hook 'company-mode)
   (add-hook 'clojurescript-mode-hook 'subword-mode)
   (add-hook 'clojurescript-mode-hook (lambda ()
                                        (setq inferior-lisp-program "lein repl")
@@ -210,6 +210,15 @@
 ;; union	⋃
 ;; intersection	⋂
 ;; difference	−
+
+;; (defun cider-jack-in-with-profile ()
+;;   (interactive)
+;;   (letrec ((profile (read-string "Enter profile name: "))
+;;            (lein-params (concat "with-profile +" profile " repl :headless")))
+;;     (message "lein-params set to: %s" lein-params)
+;;     (set-variable 'cider-lein-parameters lein-params)
+;;     ;; just a empty parameter
+;;     (cider-jack-in '())))
 
 (provide 'setup-clojure)
 ;;; setup-clojure.el ends here

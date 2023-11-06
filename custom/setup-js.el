@@ -9,10 +9,6 @@
   (js2-global-externs '("module" "require" "assert" "setInterval" "console" "__dirname__"))
   (js2-basic-offsets 2))
 
-(use-package flycheck
-  :ensure t
-  :init (global-flycheck-mode t))
-
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 (use-package typescript-mode :ensure t)
@@ -49,7 +45,8 @@
 
 (use-package react-snippets
   :after yasnippet
-  :ensure t)
+  :ensure t
+  :mode ())
 
 (use-package prettier-js
   :ensure t
@@ -107,6 +104,7 @@
                                                     '(json-jsonlint)))))
   (add-hook 'rjsx-mode-hook 'emmet-mode)
   (add-hook 'rjsx-mode-hook #'yas-minor-mode)
+  (add-hook 'rjsx-mode-hook 'company-mode)
   (add-hook 'rjsx-mode-hook 'auto-complete-mode))
 
 

@@ -6,7 +6,6 @@
                        ("req.html" "new Request.HTML({\n  onSuccess: function(responseTree, responseElements, responseHTML, responseJavaScript) {\n    $0\n  }\n}).${1:get}(${2:url});" "html" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/req.html" nil nil)
                        ("log" "console.log($0);" "console.log" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/log" nil nil)
                        ("itex" "it('$1', async () => {\n  await expect(page).toMatch('$2');\n})" "it expect simple" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/itex" nil nil)
-                       ("item" "<Grid item xs={12}>\n  $0\n</Grid>\n" "item" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/item" nil nil)
                        ("init" "initialize: function($1) {\n  $0\n}" "Constructor" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/init" nil nil)
                        ("immi" "import ${1:Object} from '@material-ui/icons/$1'`(if (eolp) (js-react-redux-yasnippets-semicolon))`;" "Import from @material-ui/icons" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/immi" nil "immi")
                        ("immc" "import ${1:Object} from '@material-ui/core/$1'`(if (eolp) (js-react-redux-yasnippets-semicolon))`" "Import from @material-ui/core" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/immc" nil "immc")
@@ -33,4 +32,4 @@
                        ("adelete" "await axios\n   .delete(\n       $1\n   )\n   .then(\n       $0\n   );" "" nil nil nil "/home/miguel/.emacs.d/snippets/js-mode/adelete" nil "adelete")))
 
 
-;;; Do not edit! File generated at Wed Jan 11 13:04:49 2023
+;;; Do not edit! File generated at Tue Oct 24 21:20:11 2023

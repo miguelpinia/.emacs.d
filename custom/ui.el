@@ -1,4 +1,11 @@
+;;; package --- Summary
+;;; commentary:
+;;; code:
+
 (use-package rainbow-delimiters :ensure t)
+
+(require 'battery)
+(setq display-battery-mode t)
 
 (defconst package-init-time (emacs-init-time)
   "Record down the package initialize time.")
@@ -11,15 +18,6 @@
   :defer t
   :hook
   (dired-mode . all-the-icons-dired-mode))
-
-(use-package projectile :ensure t
-  :custom
-  (projectile-indexing-method 'native)
-  (projectile-enable-caching t)
-  (projectile-completion-system 'helm)
-  (projectile-project-root-files #'(".projectile"))
-  :config
-  (projectile-global-mode))
 
 (use-package dashboard
   :ensure t
@@ -53,11 +51,6 @@
   :ensure t
   :config
   (load-theme 'dracula t))
-
-;; (use-package nyan-mode
-;;   :ensure t
-;;   :config
-;;   (nyan-mode))
 
 ;; (setq-default
 ;;  mode-line-format
@@ -97,7 +90,7 @@
 
 ;; ;; rename a few major modes
 ;; (add-hook 'emacs-lisp-mode-hook
-;;           (lambda() (setq mode-name "Elisp")))
+;;           (lambda() (setq mode-name "EL")))
 
 ;; (add-hook 'haskell-mode-hook
 ;;           (lambda() (setq mode-name "Haskell")))
@@ -111,8 +104,8 @@
 ;; Setup para eliminar mode-line
 
 (defun mode-line-render (left right)
-  "Return a string of `window-width' length containing left, and
-   right aligned respectively."
+  "Return a string of `window-width' length.
+It containing LEFT, and RIGHT aligned respectively."
   (let* ((available-width (- (window-total-width) (length left) )))
     (format (format "%%s %%%ds" available-width) left right)))
 
@@ -192,7 +185,8 @@ Note the weekly scope of the command's precision.")
   (mood-line--string-trim-left (mood-line--string-trim-right string)))
 
 (defun mood-line--format (left right)
-  "Return a string of `window-width' length containing LEFT and RIGHT, aligned respectively."
+  "Return a string of `window-width' length.
+It containing LEFT and RIGHT, aligned respectively."
   (let ((reserve (length right)))
     (concat left
             " "
@@ -283,9 +277,9 @@ Note the weekly scope of the command's precision.")
   "Displays color-coded flycheck information in the mode-line (if available)."
   mood-line--flycheck-text)
 
-
 (defun mood-line-segment-flymake ()
-  "Displays information about the current status of flymake in the mode-line (if available)."
+  "Displays information about the current status.
+It comming from flymake in the mode-line (if available)."
   (when (and (boundp 'flymake-mode) flymake-mode)
     (concat (mood-line--string-trim (format-mode-line flymake--mode-line-format)) "  ")))
 
@@ -293,7 +287,6 @@ Note the weekly scope of the command's precision.")
 (add-hook 'after-save-hook #'mood-line--update-vc-segment)
 (add-hook 'flycheck-status-changed-functions #'mood-line--update-flycheck-segment)
 (add-hook 'flycheck-mode-hook #'mood-line--update-flycheck-segment)
-
 
 (setq-default header-line-format
               '(:eval (mode-line-render
@@ -303,8 +296,8 @@ Note the weekly scope of the command's precision.")
                          (propertize "File " 'face 'mood-line-status-success)
                          (propertize "%b " 'face 'mood-line-buffer-name)
                          '(:eval (when (and buffer-file-name (buffer-modified-p))
-                                     (propertize "(modified) "
-                                                 'face 'mood-line-status-warning)))
+                                   (propertize "(modified) "
+                                               'face 'mood-line-status-warning)))
                          (mood-line-segment-anzu)
                          "- "
                          (propertize (format-time-string current-time-format (current-time))
@@ -318,24 +311,38 @@ Note the weekly scope of the command's precision.")
                          "["
                          (propertize "%4l:" 'face 'mood-line-status-success)
                          (propertize "%3c"  'face (if (>= (current-column) 80)
-                                                     'font-lock-warning-face
-                                                   `(:weight light :foreground "#aaaaaa")))
+                                                      'font-lock-warning-face
+                                                    `(:weight light :foreground "#aaaaaa")))
                          "]    ")
                         ))))
-
 
 (set-face-attribute 'header-line nil
                     :height 110
                     :underline "white")
-(set-face-attribute 'mode-line nil
-                    :height 1
-                    :underline "white"
-                    :box nil)
-(set-face-attribute 'mode-line-inactive nil
-                    :box nil
-                    :inherit 'mode-line)
-(set-face-attribute 'mode-line-buffer-id nil
-                    :weight 'light)
+;; (set-face-attribute 'mode-line nil
+;;                     :height 1
+;;                     :underline "white"
+;;                     :box nil)
+;; (set-face-attribute 'mode-line-inactive nil
+;;                     :box nil
+;;                     :inherit 'mode-line)
+;; (set-face-attribute 'mode-line-buffer-id nil
+;;                     :weight 'light)
+
+(use-package doom-modeline
+  :ensure t
+  :hook (after-init . doom-modeline-mode)
+  :custom
+  (doom-modeline-project-detection 'auto)
+  (doom-modeline-window-width-limit 80)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon t)
+  (doom-modeline-major-mode-color-icon t)
+  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  (doom-modeline-buffer-name t)
+  (doom-modeline-highlight-modified-buffer-name t)
+  (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+  (doom-modeline-battery t))
 
 ;; setup
 
@@ -343,15 +350,16 @@ Note the weekly scope of the command's precision.")
   :custom
   (olivetti-body-width 120))
 
-;; (defun free-distraction () (org-mode . ((eval . (progn (turn-off-auto-fill)
-;; 			                                           (text-scale-set 1)
-;; 			                                           (turn-on-olivetti-mode)))
-;; 	                                    (fill-column              . 80)
-;; 	                                    (visual-fill-column-width . 80)
-;; 	                                    (olivetti-body-width      . 80)
-;; 	                                    (mode . visual-line)
-
-;; 	                                    (mode . visual-fill-column))))
+;; (defun free-distraction ()
+;;   "Documentation."
+;;   (org-mode . ((eval . (progn (turn-off-auto-fill)
+;; 			                  (text-scale-set 1)
+;; 			                  (turn-on-olivetti-mode)))
+;; 	           (fill-column              . 80)
+;; 	           (visual-fill-column-width . 80)
+;; 	           (olivetti-body-width      . 80)
+;; 	           (mode . visual-line)
+;; 	           (mode . visual-fill-column))))
 
 ;; (set-face-attribute 'org-document-title
 ;;                     (:inherit variable-pitch
@@ -402,9 +410,22 @@ Note the weekly scope of the command's precision.")
 
 (global-prettify-symbols-mode 1)
 
-(setq org-hide-emphasis-markers t)
+(use-package beacon
+  :ensure t
+  :custom
+  (beacon-blink-duration 1)
+  (beacon-color "red")
+  (beacon-size 60)
+  (beacon-push-mark 10)
+  :config
+  (beacon-mode 1))
+
+(use-package rainbow-mode
+  :ensure t
+  :hook css-mode)
 
 ;; (set-frame-parameter (selected-frame) 'alpha '(92 . 50))
 ;; (add-to-list 'default-frame-alist '(alpha . (92 . 50)))
 
 (provide 'ui)
+;;; ui.el ends here

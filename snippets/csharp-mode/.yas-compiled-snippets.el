@@ -19,4 +19,4 @@
                        ("attrib" "/// <summary>\n/// $3\n/// </summary>\nprivate $1 $2;" "private attribute ....;" nil nil nil "/home/miguel/.emacs.d/snippets/csharp-mode/attrib" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Jan 11 13:04:48 2023
+;;; Do not edit! File generated at Tue Oct 24 21:20:11 2023

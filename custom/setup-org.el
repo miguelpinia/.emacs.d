@@ -1,6 +1,13 @@
+;;; package --- Summary
+;;; Commentary:
+;;; code:
+
 ;;;;;;;;;;;;;;;
 ;; Templates ;;
 ;;;;;;;;;;;;;;;
+
+(require 'pdf-tools)
+(require 'doc-view)
 
 (use-package org-bullets :ensure t)
 (use-package ob-restclient :ensure t)
@@ -23,11 +30,47 @@
 %U
 %^{Descripcion}")
 
+(defun miguel/buffer-mode (buffer-or-string)
+  "Return the major mode associated with the buffer BUFFER-OR-STRING."
+  (with-current-buffer buffer-or-string
+    major-mode))
+
+
+
+(defun miguel/docview-buffer-scroll-down ()
+  "Docview-buffer-scroll-down.
+
+  There are two visible buffers, one for taking notes and one for displaying
+  PDF, and the focus is on the notes buffer.  This command moves the PDF buffer
+  forward."
+  (interactive)
+  (other-window 1)
+  (if (eq 'pdf-view-mode (miguel/buffer-mode (current-buffer)))
+      (progn (pdf-view-previous-line-or-previous-page 1)
+             (other-window 1))
+    (other-window 1)))
+
+(defun miguel/docview-buffer-scroll-up ()
+  "Docview-buffer-scroll-up.
+
+  There are two visible buffers, one for taking notes and one for displaying
+  PDF, and the focus is on the notes buffer.  This command moves the PDF buffer
+  backward."
+  (interactive)
+  (other-window 1)
+  (if (eq 'pdf-view-mode (miguel/buffer-mode (current-buffer)))
+      (progn (pdf-view-next-line-or-next-page 1)
+             (other-window 1))
+    (other-window 1)))
+
+(setq doc-view-continuous t)
+
 (use-package org
   :bind (:map org-mode-map
-         ("C-j" . 'miguel/docview-buffer-scroll-down)
-         ("C-k" . 'miguel/docview-buffer-scroll-up))
+              ("C-j" . 'miguel/docview-buffer-scroll-down)
+              ("C-k" . 'miguel/docview-buffer-scroll-up))
   :custom
+  (org-latex-listings t)
   (org-hide-emphasis-markers t)
   (org-log-done t)
   (org-directory "~/Dropbox/org/")
@@ -85,6 +128,7 @@
                              "| %u | %^{Note} |"
                              :immediate-finish t)))
   (org-plantuml-jar-path (expand-file-name "~/bin/plantuml.jar"))
+  (org-ditaa-jar-path (expand-file-name "~/bin/ditaa.jar"))
   (org-mu4e-link-query-in-headers-mode nil)
   (org-mu4e-convert-to-html t)
   (org-latex-pdf-process '("latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
@@ -109,9 +153,9 @@
   (defun org-mode-reftex-search ()
     "Jump to the notes for the paper pointed to at from reftex search."
     (interactive)
-    (org-open-link-from-string
+    (org-link-open-from-string
      (format "[[notes:%s]]"
-             (first
+             (car
               (reftex-citation t)))))
   (defun org-mode-reftex-setup ()
     "Configura reftex en org mode."
@@ -146,9 +190,8 @@
      (shell . t)
      (restclient . t)
      (http . t)
-     (emacs-lisp . t))))
-
-
+     (emacs-lisp . t)
+     (ditaa . t))))
 
 (use-package org-ref
   :ensure t
@@ -170,5 +213,21 @@
          ("<f8>" . org-tree-slide-move-previous-tree)
          ("<f9>" . org-tree-slide-move-next-tree)))
 
+(use-package org-re-reveal
+  :ensure t)
+
+(use-package lsp-grammarly
+  :ensure t
+  :hook ((org-mode . (lambda ()
+                       (require 'lsp-grammarly)
+                       (lsp)))
+         (LaTeX-mode . (lambda ()
+                         (require 'lsp-grammarly)
+                         (lsp)))))
+
+(use-package org-journal
+  :ensure t)
+
 
 (provide 'setup-org)
+;;; setup-org.el ends here

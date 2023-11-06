@@ -12,6 +12,7 @@
                        ("proof" "#+begin_proof\n$0\n#+end_proof" "proof" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/proof" nil nil)
                        ("notes" "#+begin_notes\n${1:Notas}\n#+end_notes" "notes" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/notes" "direct-keybinding" nil)
                        ("matrix" "\\left \\(\n\\begin{array}{${1:ccc}}\n${2:v1 & v2} \\\\\n$0\n\\end{array}\n\\right \\)" "matrix" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/matrix" nil nil)
+                       ("\\(" "\\\\($0\\\\)" "\\(\\)" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/math" nil nil)
                        ("lemma" "#+begin_lemma\n$0\n#+end_lemma" "lemma" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/lemma" nil nil)
                        ("latex" "#+BEGIN_LaTeX\n$0\n#+END_LaTeX" "latex" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/latex" nil nil)
                        ("lat" "src_latex{\\$$0\\$}" "lat" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/lat" nil nil)
@@ -30,9 +31,9 @@
                        ("cat" "#+CATEGORY: ${1:Programación}" "cat" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/cat" "direct-keybinding" nil)
                        ("blog" "#+STARTUP: showall indent\n#+STARTUP: hidestars\n#+BEGIN_HTML\n---\nlayout: default\ntitle: ${1:title}\nexcerpt: ${2:excerpt}\n---\n$0" "blog" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/blog" nil nil)
                        ("block" "#+begin_${1:solution}\n$0\n#+end_$1" "block" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/block" nil nil)
-                       ("begin" "\\begin{${0:equation}}\n  $1\n\\end{${0:equation}}" "begin_block" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/begin" nil nil)
+                       ("begin" "\\begin{${1:equation}}\n  $0\n\\end{$1}" "begin_block" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/begin" nil nil)
                        ("algorithm" "#+LaTeX_HEADER: \\usepackage[lined,boxed,commentsnumbered]{algorithm2e}" "algorithm" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/algorithm" nil nil)
                        ("affir" "#+begin_affirmation\n$0\n#+end_affirmation" "affir" nil nil nil "/home/miguel/.emacs.d/snippets/org-mode/affir" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Jan 11 13:04:49 2023
+;;; Do not edit! File generated at Tue Oct 24 21:20:12 2023

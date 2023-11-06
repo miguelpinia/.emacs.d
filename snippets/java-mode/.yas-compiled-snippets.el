@@ -30,4 +30,4 @@
                        ("apr_assert" "if (Globals.useAssertions) {\n   ${1:assert ..};\n}\n" "apr_assert" nil nil nil "/home/miguel/.emacs.d/snippets/java-mode/apr_assert" nil nil)))
 
 
-;;; Do not edit! File generated at Wed Jan 11 13:04:49 2023
+;;; Do not edit! File generated at Tue Oct 24 21:20:11 2023

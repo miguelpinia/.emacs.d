@@ -30,35 +30,28 @@
   :custom
   (ibuffer-default-sorting-mode 'major-mode))
 
-(use-package magit
-  :ensure t
-  :custom
-  (git-commit-summary-max-length 50)
-  (magit-auto-revert-mode nil)
-  :bind (("C-x g" . magit-status)
-         :map magit-mode-map
-         ("C-c C-p" . magit-push-other)))
-
-(use-package magit-gitflow
-  :after magit
-  :ensure t
-  :config
-  (add-hook 'magit-mode-hook 'turn-on-magit-gitflow))
-
+;; (use-package git-gutter
+;;   :ensure git-gutter-fringe
+;;   :after magit
+;;   :init
+;;   (global-git-gutter-mode 1)
+;;   (setq-default left-fringe-width 25)
+;;   :hook
+;;   (magit-post-refresh . git-gutter:update-all-windows))
 
 (use-package forge
   :ensure t
   :after magit
   :config '((ghub-request "GET" "/user" nil
-                         :forge 'github
-                         :host "api.github.com"
-                         :username "miguelpinia"
-                         :auth 'forge)
-           (ghub-request "GET" "/user" nill
-                         :forge 'gitlab
-                         :host "gitlab.com/api/v4"
-                         :username "miguelpinia"
-                         :auth 'forge)))
+                          :forge 'github
+                          :host "api.github.com"
+                          :username "miguelpinia"
+                          :auth 'forge)
+            (ghub-request "GET" "/user" nill
+                          :forge 'gitlab
+                          :host "gitlab.com/api/v4"
+                          :username "miguelpinia"
+                          :auth 'forge)))
 
 (use-package google-translate
   :ensure t)
@@ -68,14 +61,14 @@
 (use-package google-translate-smooth-ui
   :after google-translate
   :defer t
-  :custom
-  (google-translate-translation-directions-alist '(("es" . "en")
-                                                   ("en" . "es")
-                                                   ("es" . "fr")
-                                                   ("fr" . "es")))
-  (google-translate-show-phonetict t)
-  (google-translate-output-destination 'nil)
-  (google-translate-listen-program "mplayer")
+  :config
+  (setq google-translate-translation-directions-alist '(("es" . "en")
+                                                        ("en" . "es")
+                                                        ("es" . "fr")
+                                                        ("fr" . "es"))
+        google-translate-show-phonetic                t
+        google-translate-output-destination           'nil
+        google-translate-listen-program               "mplayer")
   :bind ("C-c t" . google-translate-smooth-translate))
 
 
@@ -105,6 +98,15 @@
     (setq helm-net-prefer-curl t))
   (helm-mode))
 
+(use-package projectile :ensure t
+  :custom
+  (projectile-indexing-method 'native)
+  (projectile-enable-caching t)
+  (projectile-completion-system 'helm)
+  (projectile-project-root-files #'(".projectile"))
+  :config
+  (projectile-mode))
+
 (use-package helm-projectile
   :ensure t
   :after (projectile helm)
@@ -113,6 +115,27 @@
   (projectile-completion-system 'helm)
   :config
   (helm-projectile-on))
+
+(use-package magit
+  :ensure t
+  :custom
+  (git-commit-summary-max-length 50)
+  (magit-auto-revert-mode nil)
+  :bind (("C-x g" . magit-status)
+         :map magit-mode-map
+         ("C-c C-p" . magit-push-other)))
+
+(use-package magit-gitflow
+  :after magit
+  :ensure t
+  :config
+  (add-hook 'magit-mode-hook 'turn-on-magit-gitflow))
+
+(use-package magit-todos
+  :ensure t
+  :after magit
+  :hook (magit-status-mode  . magit-todos-mode)
+  :bind ("C-x t" . helm-magit-todos))
 
 (use-package bibtex-completion
   :ensure t)
@@ -130,6 +153,25 @@
                                        (incollection  . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
                                        (inproceedings . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*} ${booktitle:40}")
                                        (t             . "${=has-pdf=:1}${=has-note=:1} ${=type=:3} ${year:4} ${author:36} ${title:*}"))))
+
+(use-package helm-tramp
+  :ensure t
+  :after (helm)
+  :custom
+  (tramp-default-method "ssh")
+  (make-backup-files nil)
+  (create-lockfiles nil)
+  :config
+  (define-key global-map (kbd "C-c s") 'helm-tramp)
+  (add-hook 'helm-tramp-pre-command-hook
+            #'(lambda ()
+               ;; (global-aggressive-indent-mode 0)
+			   (projectile-mode 0)
+			   ;; (editorconfig-mode 0)
+               ))
+  (add-hook 'helm-tramp-quit-hook #'(lambda () (global-aggressive-indent-mode 1)
+			                         (projectile-mode 1)
+			                         (editorconfig-mode 1))))
 
 (use-package pdf-tools
   :ensure t
@@ -212,43 +254,6 @@
 (when window-system
   (global-set-key (kbd "C-x C-c") 'ask-before-closing))
 
-(setq doc-view-continuous t)
-(defun miguel/buffer-mode (buffer-or-string)
-  "Return the major mode associated with the buffer BUFFER-OR-STRING."
-  (with-current-buffer buffer-or-string
-    major-mode))
-
-(defun miguel/docview-buffer-scroll-down ()
-  "Docview-buffer-scroll-down.
-
-  There are two visible buffers, one for taking notes and one for displaying
-  PDF, and the focus is on the notes buffer.  This command moves the PDF buffer
-  forward."
-  (interactive)
-  (other-window 1)
-  (if (eq 'pdf-view-mode (miguel/buffer-mode (current-buffer)))
-      (progn (pdf-view-previous-line-or-previous-page 1)
-             (other-window 1))
-    (other-window 1)))
-
-(defun miguel/docview-buffer-scroll-up ()
-  "Docview-buffer-scroll-up.
-
-  There are two visible buffers, one for taking notes and one for displaying
-  PDF, and the focus is on the notes buffer.  This command moves the PDF buffer
-  backward."
-  (interactive)
-  (other-window 1)
-  (if (eq 'pdf-view-mode (miguel/buffer-mode (current-buffer)))
-      (progn (pdf-view-next-line-or-next-page 1)
-             (other-window 1))
-    (other-window 1)))
-
-(use-package org-mode
-  :bind (:map org-mode-map
-              ("C-j" . miguel/docview-buffer-scroll-up)
-              ("C-k" . miguel/docview-buffer-scroll-down)))
-
 (use-package nov
   :ensure t
   :custom
@@ -268,8 +273,6 @@
 (use-package yasnippet
   :ensure t
   :defer t
-  :custom
-  (yas-snippet-dirs '("~/.emacs.d/snippets"))
   :hook
   (after-init . yas-global-mode)
   (prog-mode . yas-minor-mode)

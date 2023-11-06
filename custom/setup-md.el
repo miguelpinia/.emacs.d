@@ -31,5 +31,9 @@
               ("\\.md\\'" . markdown-mode))))
   :hook (markdown-mode-hook . (lambda () (flyspell-mode 1))))
 
+(use-package quarto-mode
+  :ensure t
+  :mode (("\\.qmd" . poly-quarto-mode)))
+
 (provide 'setup-md)
 ;;; setup-md.el ends here

@@ -54,7 +54,7 @@ starting from the innermost."
   :config
   (setq-default TeX-master nil)
   (add-hook 'LaTeX-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'LaTeX-mode-hook 'auto-complete-mode)
+  (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
