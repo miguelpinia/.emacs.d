@@ -273,5 +273,9 @@ The date is inserted without the day of the week."
     ;; Handy key definition
 (define-key global-map "\M-Q" 'unfill-paragraph)
 
+(use-package lua-mode
+  :ensure t
+  )
+
 (provide 'edicion)
 ;;; edicion.el ends here
