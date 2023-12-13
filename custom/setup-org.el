@@ -191,6 +191,7 @@
      (restclient . t)
      (http . t)
      (emacs-lisp . t)
+     (sql . t)
      (ditaa . t))))
 
 (use-package org-ref

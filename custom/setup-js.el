@@ -124,5 +124,10 @@
 (use-package docker-compose-mode
   :ensure t)
 
+(use-package ng2-mode
+  :ensure t
+  :config
+  (with-eval-after-load 'typescript-mode (add-hook 'typescript-mode-hook #'lsp)))
+
 (provide 'setup-js)
 ;;; setup-js.el ends here

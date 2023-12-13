@@ -58,12 +58,13 @@
  '(custom-safe-themes
    '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
  '(elpy-shell-use-project-root t)
+ '(flycheck-checker-error-threshold 2000)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(org-format-latex-options
    '(:foreground default :background default :scale 1.7 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\[")))
  '(package-selected-packages
-   '(ditaa-mode quarto-mode codeium edit-indirect org-journal lsp-grammarly helm-xref dap-cpptools procress doom-modeline rainbow-mode beacon helm-tramp org-re-reveal helm-lsp dap-java lsp-java which-key dap-chrome dap-mode lsp-ui lsp-mode company magit-todos flyspell-correct-helm flyspell-correct flycheck-clj-kondo flycheck-clj-condo cider docker-compose-mode dockerfile-mode fzf dired-git-info js-mode pyvenv-auto python pyvenv oc tex modern-cpp-font-lock cpp-auto-include disaster plantuml-mode cmake-mode vterm clj-refactor helm-bufler bufler ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref transient forge auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit undo-tree isearch-dabbrev column-enforce-mode use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))
+   '(lua-mode ng2-mode ditaa-mode quarto-mode codeium edit-indirect org-journal lsp-grammarly helm-xref dap-cpptools procress doom-modeline rainbow-mode beacon helm-tramp org-re-reveal helm-lsp dap-java lsp-java which-key dap-chrome dap-mode lsp-ui lsp-mode company magit-todos flyspell-correct-helm flyspell-correct flycheck-clj-kondo flycheck-clj-condo cider docker-compose-mode dockerfile-mode fzf dired-git-info js-mode pyvenv-auto python pyvenv oc tex modern-cpp-font-lock cpp-auto-include disaster plantuml-mode cmake-mode vterm clj-refactor helm-bufler bufler ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref transient forge auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit undo-tree isearch-dabbrev column-enforce-mode use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))
  '(safe-local-variable-values
    '((eval org-babel-ref-resolve "skeletons")
      (eval add-hook 'before-save-hook
@@ -71,7 +72,8 @@
              (org-babel-ref-resolve "process-export-filenames")))
      (eval org-babel-ref-resolve "export-setup")
      (org-export-initial-scope . buffer)))
- '(warning-suppress-log-types '((:warning))))
+ '(warning-suppress-log-types '((:warning)))
+ '(warning-suppress-types '((use-package) (use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
