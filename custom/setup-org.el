@@ -217,14 +217,14 @@
 (use-package org-re-reveal
   :ensure t)
 
-(use-package lsp-grammarly
-  :ensure t
-  :hook ((org-mode . (lambda ()
-                       (require 'lsp-grammarly)
-                       (lsp)))
-         (LaTeX-mode . (lambda ()
-                         (require 'lsp-grammarly)
-                         (lsp)))))
+;; (use-package lsp-grammarly
+;;   :ensure t
+;;   :hook ((org-mode . (lambda ()
+;;                        (require 'lsp-grammarly)
+;;                        (lsp)))
+;;          (LaTeX-mode . (lambda ()
+;;                          (require 'lsp-grammarly)
+;;                          (lsp)))))
 
 (use-package org-journal
   :ensure t)

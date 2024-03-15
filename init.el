@@ -1,6 +1,7 @@
 (require 'package)
 (setq byte-compile-warnings '(cl-functions))
 
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'load-path "~/.emacs.d/custom/")
 ;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
 (setq user-full-name "Miguel Piña"
@@ -45,7 +46,7 @@
 
 
 
-(setq exec-path (append exec-path '("~/.nvm/versions/node/v17.2.0/bin")))
+(setq exec-path (append exec-path '("~/.nvm/versions/node/v20.10.0/bin")))
 ;; (setq exec-path (append exec-path '()))
 
 (custom-set-variables

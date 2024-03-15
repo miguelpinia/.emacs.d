@@ -24,7 +24,7 @@
   :custom
   (dashboard-banner-logo-title "[D I D D Y • E M A C S]")
   (dashboard-footer-icon "")
-  (dashboard-footer "╬ Copyright © 2023 Miguel Piña ╬")
+  (dashboard-footer "╬ Copyright © 2024 Miguel Piña ╬")
   (dashboard-center-content t)
   (dashboard-set-navigator t)
   (dashboard-startup-banner 'logo)
@@ -36,11 +36,12 @@
   (dashboard-insert-init-info t)
   (dashboard-set-file-icons t)
   (dashboard-set-heading-icons t)
-  (dashboard-heading-icons '((recents . "file-text")
-                             (bookmarks . "bookmark")
-                             (agenda . "calendar")
-                             (projects . "file-directory")
-                             (registers . "database")))
+  (dashboard-icon-type 'nerd-icons)
+  (dashboard-heading-icons '((recents   . "nf-oct-file")
+                             (bookmarks . "nf-oct-bookmark")
+                             (agenda    . "nf-oct-calendar")
+                             (projects  . "nf-oct-file_directory")
+                             (registers . "nf-oct-database")))
   :hook
   (dashboard-mode . (lambda () (linum-mode -1)))
   :config

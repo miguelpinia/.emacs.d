@@ -41,9 +41,6 @@ starting from the innermost."
   :config
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
-(use-package tex
-  :ensure auctex)
-
 (use-package tex-site
   :ensure auctex
   :after tex-mode
