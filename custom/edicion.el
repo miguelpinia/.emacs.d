@@ -54,7 +54,7 @@
 (add-hook 'cc-mode-hook  'trailing-whitespaces)
 (add-hook 'java-mode-hook 'trailing-whitespaces)
 (add-hook 'sql-mode-hook 'trailing-whitespaces)
-(add-hook 'LaTeX-mode-hook 'column-enforce-mode)
+;; (add-hook 'LaTeX-mode-hook 'column-enforce-mode)
 (add-hook 'python-mode-hook 'column-enforce-mode)
 (add-hook 'java-mode-hook 'column-enforce-mode)
 (add-hook 'cc-mode-hook 'column-enforce-mode)
