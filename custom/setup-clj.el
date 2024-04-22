@@ -5,6 +5,9 @@
 ;;;;
 ;; Clojures
 ;;;;
+(use-package clj-refactor
+  :ensure t)
+
 (defun my-clojure-mode-hook ()
   "Foo."
   (clj-refactor-mode t)
@@ -144,8 +147,7 @@
 ;;      (add-to-list 'ac-modes 'cider-mode)
 ;;      (add-to-list 'ac-modes 'cider-repl-mode)))
 
-;; (use-package clj-refactor
-;;   :ensure t)
+
 
 ;; ;; Usa clojure para otras extensiones.
 
