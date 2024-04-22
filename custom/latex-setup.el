@@ -2,6 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 
+(add-hook 'LaTeX-mode-hook #'disable-column-enforce-mode)
+
 (defun mg-TeX-delete-current-macro (&optional arg)
   "Remove the current macro.
 With an optional argument ARG, delete just the ARG-th macro
@@ -41,6 +43,10 @@ starting from the innermost."
   :config
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
+(defun disable-column-enforce-mode ()
+  "Disables column-enforce-mode"
+  (column-enforce-mode -1))
+
 (use-package tex-site
   :ensure auctex
   :after tex-mode
@@ -54,7 +60,7 @@ starting from the innermost."
   (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+  ;; (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   ;; (add-hook 'LaTeX-mode-hook
   ;;         (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
   ;;                    (cons "\\(" "\\)"))))
