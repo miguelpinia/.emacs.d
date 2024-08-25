@@ -1,4 +1,5 @@
 (require 'package)
+(require 'warnings)
 (setq byte-compile-warnings '(cl-functions))
 
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -16,6 +17,9 @@
                                    ("melpa-stable" . 60)
                                    ("gnu" . 50)
                                    ("tromey" . 30)))
+
+(setq warning-minimum-level :error
+      warning-suppress-log-types '((:warning)))
 
 (package-initialize)
 (unless package-archive-contents
@@ -66,7 +70,7 @@
    '(:foreground default :background default :scale 1.7 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\[")))
  '(package-selected-packages
-   '(lua-mode ng2-mode ditaa-mode quarto-mode codeium edit-indirect org-journal lsp-grammarly helm-xref dap-cpptools procress doom-modeline rainbow-mode beacon helm-tramp org-re-reveal helm-lsp dap-java lsp-java which-key dap-chrome dap-mode lsp-ui lsp-mode company magit-todos flyspell-correct-helm flyspell-correct flycheck-clj-kondo flycheck-clj-condo cider docker-compose-mode dockerfile-mode fzf dired-git-info js-mode pyvenv-auto python pyvenv oc tex modern-cpp-font-lock cpp-auto-include disaster plantuml-mode cmake-mode vterm clj-refactor helm-bufler bufler ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref transient forge auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow magit dired-isearch smartparens paredit undo-tree isearch-dabbrev use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))
+   '(plz ellama lorem-ipsum lua-mode ng2-mode ditaa-mode quarto-mode codeium edit-indirect org-journal lsp-grammarly helm-xref dap-cpptools procress doom-modeline rainbow-mode beacon helm-tramp org-re-reveal helm-lsp dap-java lsp-java which-key dap-chrome dap-mode lsp-ui lsp-mode company magit-todos flyspell-correct-helm flyspell-correct flycheck-clj-kondo flycheck-clj-condo cider docker-compose-mode dockerfile-mode fzf dired-git-info js-mode pyvenv-auto python pyvenv oc tex modern-cpp-font-lock cpp-auto-include disaster plantuml-mode cmake-mode vterm clj-refactor helm-bufler bufler ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref forge auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow dired-isearch smartparens paredit undo-tree isearch-dabbrev use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))
  '(safe-local-variable-values
    '((eval org-babel-ref-resolve "skeletons")
      (eval add-hook 'before-save-hook

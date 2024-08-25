@@ -121,6 +121,7 @@
   :custom
   (git-commit-summary-max-length 50)
   (magit-auto-revert-mode nil)
+  (magit-show-long-lines-warning nil)
   :bind (("C-x g" . magit-status)
          :map magit-mode-map
          ("C-c C-p" . magit-push-other)))
@@ -134,7 +135,7 @@
 (use-package magit-todos
   :ensure t
   :after magit
-  :hook (magit-status-mode  . magit-todos-mode)
+  :config (magit-todos-mode 1)
   :bind ("C-x t" . helm-magit-todos))
 
 (use-package bibtex-completion

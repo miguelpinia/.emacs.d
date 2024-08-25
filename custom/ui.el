@@ -373,7 +373,7 @@ It comming from flymake in the mode-line (if available)."
 ;;                                :foreground ,bg-dark
 ;;                                :underline nil))
 
-(defconst miguel/font "input 11")
+(defconst miguel/font "input 13")
 (set-frame-font miguel/font)
 (setq-default column-number-mode t ;; Muestra la linea y la columna.
               frame-title-format "%b (%f)" ;; Path completo en la barra de títulos.
