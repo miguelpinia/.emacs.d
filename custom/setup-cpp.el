@@ -25,4 +25,7 @@
 (use-package modern-cpp-font-lock
   :ensure t)
 
+(use-package cmake-mode
+  :ensure t)
+
 ;;; setup-cpp.el ends here

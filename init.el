@@ -43,6 +43,7 @@
 (load "setup-md.el")
 (load "setup-sql.el")
 (load "setup-py.el")
+(load "setup-cpp.el")
 ;;(load "setup-php.el")
 (load "setup-clj.el")
 (load "setup-cpp.el")
@@ -66,6 +67,7 @@
  '(elpy-shell-use-project-root t)
  '(flycheck-checker-error-threshold 2000)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
+ '(org-agenda-files nil nil nil "Customized with use-package org")
  '(org-format-latex-options
    '(:foreground default :background default :scale 1.7 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
                  ("begin" "$1" "$" "$$" "\\(" "\\[")))
