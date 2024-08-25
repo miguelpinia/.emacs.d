@@ -90,5 +90,19 @@
   :ensure t
   :init (global-flycheck-mode))
 
+(use-package plz
+  :ensure t)
+
+(use-package ellama
+  :ensure t
+  :init
+  (setq ellama-language "Spanish") ; Use `setq` instead of `setopt` for setting variables
+  (require 'llm-ollama)
+  (setq ellama-provider
+        (make-llm-ollama
+         :chat-model "codestral"
+         :embedding-model "codestral")) ; Use `setq` instead of `setopt` for setting variables
+  )
+
 (provide 'lsp-support)
 ;;; lsp-support.el ends here
