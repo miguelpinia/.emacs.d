@@ -1,5 +1,5 @@
 # -*- mode: snippet; require-final-newline: nil -*-
-# name: begin
+# name: begin sql
 # key: be
 # binding: direct-keybinding
 # --
