@@ -2,7 +2,10 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'makefile-automake-mode
-                     '(("noinst" "noinst_HEADERS = $0" "noinst_HEADERS" nil nil nil "/home/miguel/.emacs.d/snippets/makefile-automake-mode/noinst_HEADERS" nil nil)))
+                     '(("noinst" "noinst_HEADERS = $0"
+                        "noinst_HEADERS" nil nil nil
+                        "/Users/mangelpa/.emacs.d/snippets/makefile-automake-mode/noinst_HEADERS"
+                        nil nil)))
 
 
-;;; Do not edit! File generated at Tue Oct 24 21:20:12 2023
+;;; Do not edit! File generated at Wed Aug 20 11:53:21 2025

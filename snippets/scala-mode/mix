@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 #Author : Jonas Bonèr <jonas@jonasboner.com>
-#name : trait T { .. }
+#name : mix - trait T { .. }
 # key: mix
 # --
 trait ${1:name} {

@@ -6,9 +6,19 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'prog-mode
-                     '(("x" "`(yas-with-comment \"XXX: \")`" "xxx" nil nil nil "/home/miguel/.emacs.d/snippets/prog-mode/xxx" nil nil)
-                       ("t" "`(yas-with-comment \" TODO:\")` ${1:todo} (MAPA `(format-time-string \"%Y-%m-%d\")`)" "todo" nil nil nil "/home/miguel/.emacs.d/snippets/prog-mode/todo" nil nil)
-                       ("fi" "`(yas-with-comment \"FIXME: \")`" "fixme" nil nil nil "/home/miguel/.emacs.d/snippets/prog-mode/fixme" nil nil)))
+                     '(("x" "`(yas-with-comment \"XXX: \")`" "xxx" nil
+                        nil nil
+                        "/Users/mangelpa/.emacs.d/snippets/prog-mode/xxx"
+                        nil nil)
+                       ("t"
+                        "`(yas-with-comment \" TODO:\")` ${1:todo} (MAPA `(format-time-string \"%Y-%m-%d\")`)"
+                        "todo" nil nil nil
+                        "/Users/mangelpa/.emacs.d/snippets/prog-mode/todo"
+                        nil nil)
+                       ("fi" "`(yas-with-comment \"FIXME: \")`"
+                        "fixme" nil nil nil
+                        "/Users/mangelpa/.emacs.d/snippets/prog-mode/fixme"
+                        nil nil)))
 
 
-;;; Do not edit! File generated at Tue Oct 24 21:20:12 2023
+;;; Do not edit! File generated at Wed Aug 20 11:53:21 2025

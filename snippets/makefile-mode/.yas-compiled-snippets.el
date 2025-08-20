@@ -2,7 +2,9 @@
 ;;; Snippet definitions:
 ;;;
 (yas-define-snippets 'makefile-mode
-                     '(("all" "all:\n        $0" "all" nil nil nil "/home/miguel/.emacs.d/snippets/makefile-mode/all" nil nil)))
+                     '(("all" "all:\n        $0" "all" nil nil nil
+                        "/Users/mangelpa/.emacs.d/snippets/makefile-mode/all"
+                        nil nil)))
 
 
-;;; Do not edit! File generated at Tue Oct 24 21:20:12 2023
+;;; Do not edit! File generated at Wed Aug 20 11:53:21 2025
