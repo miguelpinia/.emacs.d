@@ -1,6 +1,5 @@
 ;;; setup-terminal.el --- Summary
 ;;; Commentary:
-(require 'term)
 
 ;;; Code:
 
@@ -10,7 +9,7 @@
 
 (add-hook 'term-mode-hook
           (lambda() (setq yas-dont-activate t)
-            (linum-mode 0)))
+            (display-line-numbers-mode 0)))
 
 ;; (defadvice term-sentinel
 ;;     (around my-advice-term-sentinel (proc msg))
@@ -57,13 +56,14 @@
   (vterm-copy-exclude-prompt t)
   (vterm-buffer-name-string "*vterm %s")
   :config
-  (add-hook 'vterm-mode-hook
-            (lambda ()
-              (set (make-local-variable 'buffer-face-mode-face) '(:family "MesloLGS NF" :weight bold :height 120))
-              (buffer-face-mode t)))
+  ;; (add-hook 'vterm-mode-hook
+  ;;           (lambda ()
+  ;;             (set (make-local-variable 'buffer-face-mode-face) '(:family "MesloLGS NF" :weight bold :height 120))
+  ;;             (buffer-face-mode t)))
   (define-key vterm-mode-map (kbd "C-m") #'vterm-send-return))
-
 
 
 (provide 'terminal)
 ;;; terminal.el ends here
+;; (if (not (string= "" (string-trim (shell-command-to-string "git status --porcelain"))))
+;;     " ✎" " ✔")

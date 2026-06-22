@@ -77,11 +77,9 @@ starting from the innermost."
   ;; (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
   ;;           #'TeX-revert-document-buffer)
   ;; (add-hook 'LaTex-mode-hook 'pdf-tools-install)
-  (setq TeX-view-program-selection '((output-pdf "pdf-tools")
-                                     (output-pdf "Evince"))
+  (setq TeX-view-program-selection '((output-pdf "Evince"))
         TeX-source-correlate-start-server t
-        TeX-view-program-list '(("pdf-tools" TeX-pdf-tools-sync-view)
-                                ("Evince" "evince --page-index=%(outpage) %o"))
+        TeX-view-program-list '(("Evince" "evince --page-index=%(outpage) %o"))
         TeX-source-correlate-method '((dvi . source-specials)
                                       (pdf . synctex)))
   (define-key latex-mode-map (kbd "C-c d") 'mg-TeX-delete-current-macro))

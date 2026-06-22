@@ -83,7 +83,7 @@
 ;;
 ;;  You can use `e' to show the file of the current line.  If it is
 ;;  already shown in the same frame, and if Dired is the only other
-;;  window there, then the file is hidden (its window is deleted).
+;;  Window there, then the file is hidden (its window is deleted).
 ;;
 ;;
 ;;  Font-Lock Highlighting
