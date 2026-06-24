@@ -253,7 +253,12 @@ The date is inserted without the day of the week."
 
 ;; Over SSH, terminal escape sequences arrive fragmented and leak as garbage.
 ;; Disable focus reporting and bracketed paste after terminal init.
-(setq xterm-extra-capabilities '(modifyOtherKeys getSelection setSelection))
+;; NOTE: do not include `modifyOtherKeys' here. Forcing it on makes the terminal
+;; encode Meta/Option combos as CSI sequences carrying a modifier bitmask, which
+;; tmux does not forward (no extended-keys/extkeys) and which the external
+;; mechanical keyboard encodes differently than the built-in one — breaking M-x.
+;; Keeping only the selection capabilities preserves OSC-52 clipboard behavior.
+(setq xterm-extra-capabilities '(getSelection setSelection))
 (defun my/disable-focus-events ()
   "Disable xterm focus and bracketed paste reporting on this terminal."
   (when (and (getenv "SSH_TTY")
