@@ -2,26 +2,43 @@
 ;;; Commentary:
 ;;; code:
 
+;; Root of the org tree. `defvar' is deliberate: custom/local.el runs first and
+;; may already have set this for the host, in which case this default is a
+;; no-op. Expected layout underneath: agenda/ and roam/.
+(defvar miguel/org-root "~/org/"
+  "Directory containing the org files, agenda/ and roam/ subdirectories.")
+
 ;;;;;;;;;;;;;;;
 ;; Templates ;;
 ;;;;;;;;;;;;;;;
-
-(require 'pdf-tools)
-(require 'doc-view)
 
 (use-package org-bullets :ensure t)
 (use-package ob-restclient :ensure t)
 (use-package ob-http :ensure t)
 (use-package plantuml-mode :ensure t)
 
+(let ((plantuml-path (expand-file-name "~/bin/plantuml.jar")))
+  (when (file-exists-p plantuml-path)
+    (setq plantuml-jar-path plantuml-path)
+    (setq plantuml-default-exec-mode 'jar)))
+
 (defvar my/org-basic-task-template
-  "***** TODO %?
-   SCHEDULED: %^t
-   :PROPERTIES:
-   :Effort: %^{effort|1:00|0:05|0:15|0:30|2:00|4:00}
-   :END:
-   %^{Descripcion}
-" "Basic task data.")
+  "* INBOX %?
+SCHEDULED: %^t
+:PROPERTIES:
+:Effort: %^{Effort|0:15|0:30|1:00|2:00|4:00|8:00}
+:Context: %^{Context|@lydia|@ppas|@charon|@home|@office|@lydia-installments}
+:END:
+:LOGBOOK:
+:END:
+
+%^{Description}
+
+** Next Actions:
+- [ ] %^{First concrete step}
+
+** Notes:
+" "Improved basic task template with GTD structure.")
 
 (defvar my/org-basic-item-template "[ ] %^{Descripcion}")
 (defvar my/org-basic-note-template "* %?\n\n%i\n")
@@ -30,50 +47,24 @@
 %U
 %^{Descripcion}")
 
-(defun miguel/buffer-mode (buffer-or-string)
-  "Return the major mode associated with the buffer BUFFER-OR-STRING."
-  (with-current-buffer buffer-or-string
-    major-mode))
+(defvar my/org-basic-lecture-template "
 
+***** %^{Lecture title}
+      Date: %U
+      Author: %^{Author name}
+      Topic: %^{Topic}
+      [[%%^{Link}][Source link]]
+      Notes:
+      %?
 
-
-(defun miguel/docview-buffer-scroll-down ()
-  "Docview-buffer-scroll-down.
-
-  There are two visible buffers, one for taking notes and one for displaying
-  PDF, and the focus is on the notes buffer.  This command moves the PDF buffer
-  forward."
-  (interactive)
-  (other-window 1)
-  (if (eq 'pdf-view-mode (miguel/buffer-mode (current-buffer)))
-      (progn (pdf-view-previous-line-or-previous-page 1)
-             (other-window 1))
-    (other-window 1)))
-
-(defun miguel/docview-buffer-scroll-up ()
-  "Docview-buffer-scroll-up.
-
-  There are two visible buffers, one for taking notes and one for displaying
-  PDF, and the focus is on the notes buffer.  This command moves the PDF buffer
-  backward."
-  (interactive)
-  (other-window 1)
-  (if (eq 'pdf-view-mode (miguel/buffer-mode (current-buffer)))
-      (progn (pdf-view-next-line-or-next-page 1)
-             (other-window 1))
-    (other-window 1)))
-
-(setq doc-view-continuous t)
+")
 
 (use-package org
-  :bind (:map org-mode-map
-              ("C-j" . 'miguel/docview-buffer-scroll-down)
-              ("C-k" . 'miguel/docview-buffer-scroll-up))
   :custom
   (org-latex-listings t)
   (org-hide-emphasis-markers t)
   (org-log-done t)
-  (org-directory "~/Dropbox/org/")
+  (org-directory miguel/org-root)
   (org-confirm-babel-evaluate nil)
   (org-src-fontify-natively t)
   (org-src-tab-acts-natively t)
@@ -85,31 +76,34 @@
   (org-file-apps '(("\\.docx\\'" . default)
                    ("\\.mm\\'" . default)
                    ("\\.x?html?\\'" . default)
-                   ("\\.pdf\\'" . (lambda (file link)
-                                    (org-pdftools-open link)))
+                   ("\\.pdf\\'" . default)
                    ("\\.djvu\\'" . "evince \"%s\"")
                    ("\\.djvu::\\([0-9]+\\)\\'" . "evince \"%s\" -p %1")
                    (auto-mode . emacs)))
-  (org-link-abbrev-alist '(("bib" . "~/Dropbox/org/phd/research/refs.bib::%s")
-                           ("notes" . "~/Dropbox/org/doctorado.org::#%s")
-                           ("papers" . "~/Dropbox/org/phd/research/papers/%s.pdf")))
-  (org-agenda-files '("~/Dropbox/org/agenda/"))
-  (org-todo-keyword-faces '(("PREVERIFY" . "yellow")
-                            ("FEEDBACK" . "yellow")
-                            ("VERIFY" . "blue")
-                            ("STARTED" . "DeepSkyBlue")
-                            ("ASIGNED" . "green")
-                            ("WAIT" . "yellow")))
-  (org-todo-keywords  '((sequence "TODO(t)" "STARTED(s)" "FEEDBACK(f@)" "WAIT(w@)"
-                                  "PREVERIFY(p)" "VERIFY(v@)" "|" "DONE(d@)" "DELEGATED(e@)")
-                        (sequence "REPORT(r)" "BUG(b)" "KNOWNCAUSE(k)" "|" "FIXED(o@)")
-                        (sequence "|" "CANCELED(c@)")))
+  (org-todo-keyword-faces '(("INBOX"         . "gray")
+                            ("NEXT"          . "orange")
+                            ("STARTED"       . "DeepSkyBlue")
+                            ("WAITING"       . "yellow")
+                            ("PROJECT"       . "purple")
+                            ("SOMEDAY"       . "lightgray")
+                            ("BUG"           . "red")
+                            ("INVESTIGATING" . "orange")
+                            ("FIXING"        . "yellow")
+                            ("IDEA"          . "lightblue")))
+  (org-todo-keywords  '(
+                        (sequence "INBOX(i)" "TODO(t@)" "NEXT(n@)" "STARTED(s@)" "WAITING(w@)" "|" "DONE(d@)" "DELEGATED(e@)" "CANCELED(c@)")
+                        (sequence "PROJECT(p)" "SOMEDAY(o)" "|" "COMPLETED(C@)" "DROPPED(D@)")
+                        (sequence "BUG(b)" "INVESTIGATING(I@)" "FIXING(f@)" "|" "FIXED(F@)" "WONTFIX(W@)")
+                        (sequence "IDEA(a)" "|" "IMPLEMENTED(m@)" "REJECTED(r@)")))
   (org-capture-templates  `(("t" "tareas" entry
                              (file+olp+datetree ,(concat org-directory "agenda/tareas.org") "Tareas")
                              ,my/org-basic-task-template)
                             ("p" "prepa" entry
                              (file+olp+datetree ,(concat org-directory "agenda/prepa.org") "Tareas")
                              ,my/org-basic-task-template)
+                            ("l" "Lectures" entry
+                             (file+olp+datetree ,(concat org-directory "agenda/lectures.org") "Lecturas")
+                             ,my/org-basic-lecture-template)
                             ("d" "Tareas doctorado" entry
                              (file+olp+datetree ,(concat org-directory "agenda/doctorado.org") "Tareas Doctorado")
                              ,my/org-basic-task-template
@@ -127,18 +121,65 @@
                              (file+olp ,(concat org-directory "agenda/organizador.org") "Notas")
                              "| %u | %^{Note} |"
                              :immediate-finish t)))
-  (org-plantuml-jar-path (expand-file-name "~/bin/plantuml.jar"))
+  (org-plantuml-default-exec-mode 'jar)
   (org-ditaa-jar-path (expand-file-name "~/bin/ditaa.jar"))
-  (org-mu4e-link-query-in-headers-mode nil)
-  (org-mu4e-convert-to-html t)
   (org-latex-pdf-process '("latexmk -pdflatex='lualatex -shell-escape -interaction nonstopmode' -pdf -f  %f"))
   :init
+  (let ((plantuml-path (expand-file-name "~/bin/plantuml.jar")))
+    (when (file-exists-p plantuml-path)
+      (setq org-plantuml-jar-path plantuml-path)))
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (with-eval-after-load 'org
+    (add-to-list 'org-src-lang-modes '("plantuml" . plantuml)))
+  (customize-set-variable 'org-agenda-prefix-format '((agenda . " %-12c %?-18t% s")
+                                                      (timeline . "  % s")
+                                                      (todo . " %i %-12:c")
+                                                      (tags . " %i %-12:c")
+                                                      (search . " %i %-12:c")))
+  (customize-set-variable 'org-agenda-todo-keyword-format "%-10s")
+  (customize-set-variable 'org-agenda-scheduled-leaders
+                          '("[S] : " "[S] x%3d d.: "))
+  (customize-set-variable 'org-agenda-deadline-leaders
+                          '("[D] : " "[D] +%3d d.: " "[D] -%3d d.: "))
+  (customize-set-variable 'org-agenda-time-grid
+                          '((today require-timed remove-match)
+                            (000 1200 2400)
+                            ":  " "┈┈┈┈┈┈┈┈┈┈┈┈┈"))
+  (setq org-agenda-skip-scheduled-if-deadline-is-shown t)
+  (add-to-list
+   'org-agenda-custom-commands
+   '("w" "THIS WEEK"
+     ((agenda ""
+              ((org-agenda-overriding-header
+                (concat "THIS WEEK (W" (format-time-string "%V") ")")))))))
+  (add-to-list
+   'org-agenda-custom-commands
+   '("d" "DAY'S AGENDA"
+     ((agenda ""
+              ((org-agenda-overriding-header
+                (concat "TODAY (W" (format-time-string "%V") ")"))
+               (org-agenda-span 'day)
+               (org-agenda-sorting-strategy
+                '((agenda time-up priority-down category-keep)))
+               (org-agenda-show-log t)
+               (org-agenda-log-mode-items '(clock)))))))
+
+  (customize-set-variable 'org-agenda-current-time-string "ᐊ┈┈┈┈┈┈┈┈ now")
   (defun my-org-hooks ()
     "My hooks for org mode."
+    ;; Override Dracula theme for org-block faces
+    (with-eval-after-load 'org-faces
+      (set-face-attribute 'org-block nil
+                          :background "#3a3c4e")
+      (set-face-attribute 'org-block-begin-line nil
+                          :overline "#6272a4"
+                          :underline "#6272a4" :foreground "#8be9fd" :background "#2f3349"
+                          )
+      (set-face-attribute 'org-block-end-line nil
+                          :overline "#6272a4" :foreground "#8be9fd" :background "#2f3349"))
+
     (yas-minor-mode 1)
     (column-enforce-mode 1)
     (org-bullets-mode 1)
@@ -149,33 +190,12 @@
   (add-hook 'org-capture-mode-hook 'hide-lat-num)
   (add-hook 'org-agenda-mode-hook 'hide-lat-num)
   (add-hook 'org-mode-hook 'my-org-hooks)
-  (add-hook 'org-mode-hook 'org-mode-reftex-setup)
-  (defun org-mode-reftex-search ()
-    "Jump to the notes for the paper pointed to at from reftex search."
-    (interactive)
-    (org-link-open-from-string
-     (format "[[notes:%s]]"
-             (car
-              (reftex-citation t)))))
-  (defun org-mode-reftex-setup ()
-    "Configura reftex en org mode."
-    (load-library "reftex")
-    (and (buffer-file-name) (file-exists-p (buffer-file-name))
-         (progn
-           ;; enable auto-revert-mode to update reftex when bibtex file changes on disk
-           (global-auto-revert-mode t)
-           (reftex-parse-all)
-           ;;add a custom reftex cite format to insert links
-           (reftex-set-cite-format
-            '((?b . "[[bib:%l][%l-bib]]")
-              (?n . "[[notes:%l][%l-notes]]")
-              (?p . "[[papers:%l][%l-paper]]")
-              (?t . "%t")
-              (?h . "*** %t\n:PROPERTIES:\n:Custom_ID: %l\n:END:\n[[papers:%l][%l-paper]]")))))
-    (define-key org-mode-map (kbd "C-c )") 'reftex-citation)
-    (define-key org-mode-map (kbd "C-c (") 'org-mode-reftex-search))
 
   :config
+  (setq org-agenda-files
+        (let ((agenda (expand-file-name "agenda" miguel/org-root)))
+          (when (file-directory-p agenda)
+            (directory-files-recursively agenda "\\.org$"))))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((dot . t)
@@ -189,22 +209,7 @@
      (R . t)
      (shell . t)
      (restclient . t)
-     (http . t)
-     (emacs-lisp . t)
-     (sql . t)
      (ditaa . t))))
-
-(use-package org-ref
-  :ensure t
-  :after org
-  :demand t
-  :custom
-  (org-ref-default-bibliography '("~/Dropbox/org/phd/research/refs.bib"))
-  (org-ref-bibliography-notes "~/Dropbox/org/phd/research/notes/notes.org")
-  (org-ref-pdf-directory "~/Dropbox/org/phd/research/papers/")
-  :bind
-  (("C-c C-o" . org-ref-open-pdf-at-point)
-   ("C-c p" . helm-bibtex)))
 
 (use-package org-tree-slide
   :ensure t
@@ -214,21 +219,51 @@
          ("<f8>" . org-tree-slide-move-previous-tree)
          ("<f9>" . org-tree-slide-move-next-tree)))
 
-(use-package org-re-reveal
-  :ensure t)
+(use-package org-roam
+  :ensure t
+  :custom
+  (org-roam-directory (file-truename (expand-file-name "roam" miguel/org-root)))
+  :bind (("C-c n l" . org-roam-buffer-toggle)
+         ("C-c n f" . org-roam-node-find)
+         ("C-c n g" . org-roam-graph)
+         ("C-c n i" . org-roam-node-insert)
+         ("C-c n c" . org-roam-capture))
+  :bind-keymap
+  ("C-c n d" . org-roam-dailies-map)
+  :config
+  (setq org-roam-node-display-template     (concat "${title:*} " (propertize "${tags:10}" 'face 'org-tag))
+        org-roam-mode-sections             (list #'org-roam-backlinks-section
+                                                 #'org-roam-reflinks-section)
+        org-roam-dailies-directory         "daily/"
+        org-roam-dailies-capture-templates '(("e" "Daily Log Entry" entry
+                                              "** %<%I:%M %p>: %?"
+                                              :target (file+head+olp "%(format-time-string \"%Y-%m-%d\").org"
+                                                                     "#+title: %(format-time-string \"%Y-%m-%d\")\n\n* Focus\n\n* Tasks\n\n* Journal"
+                                                                     ("Journal")))
 
-;; (use-package lsp-grammarly
-;;   :ensure t
-;;   :hook ((org-mode . (lambda ()
-;;                        (require 'lsp-grammarly)
-;;                        (lsp)))
-;;          (LaTeX-mode . (lambda ()
-;;                          (require 'lsp-grammarly)
-;;                          (lsp)))))
+                                             ("l" "Daily Log Entry custom" entry "** %<%I:%M %p>: %?"
+                                              :target (file+head+olp "%<%Y-%m-%d>.org"
+                                                                     "#+title: %<%Y-%m-%d>\\n\n Long\n:PROPERTIES:\nVISIBILITY: children\n:END:\n#+FILETAGS: daily\n\n* Focus\n\n* Tasks\n\n* Journal"
+                                                                     ("%^{Type node}"))
+                                              :unnarrowed t)
+                                             ("d" "day-entry" entry
+	                                          "* %<%d-%m-%Y> \n\n%?"
+	                                          :target (file+datetree "%<%Y>.org" month)
+	                                          :empty-lines 1
+	                                          :unnarrowed t
+	                                          :jump-to-captured t)
+                                             ))
+  (org-roam-db-autosync-mode)
+  (require 'org-roam-protocol)
+  (require 'org-roam-dailies))
+
+(use-package ox-md
+  :after org)
+(with-eval-after-load 'ox
+  (add-to-list 'org-export-backends 'md))
 
 (use-package org-journal
   :ensure t)
-
 
 (provide 'setup-org)
 ;;; setup-org.el ends here

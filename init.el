@@ -66,6 +66,15 @@
 (straight-use-package 'compat)
 (require 'compat)
 
+;; Machine-local configuration (gitignored, optional).
+;;
+;; Loaded before the modules so it can define host-specific values they consume
+;; (for example `miguel/org-root'), and set up internal-only packages. Settings
+;; that must override a module use `with-eval-after-load' inside that file.
+(let ((local (expand-file-name "custom/local.el" user-emacs-directory)))
+  (when (file-exists-p local)
+    (load local nil 'nomessage)))
+
 ;; Module loads
 (load "setup-org.el")
 (load "ui.el")
