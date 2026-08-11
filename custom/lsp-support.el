@@ -18,18 +18,22 @@
   :ensure t
   :init
   :hook ((lsp-mode . lsp-enable-which-key-integration)
-         ((js-mode latex-mode) . lsp-mode))
+         (latex-mode . lsp-mode))
   :custom
   (lsp-keymap-prefix "C-c l")
   (lsp-headerline-breadcrumb-enable nil)
   ;; (lsp-clients-clangd-executable "clangd")
-  (lsp-auto-guess-root t)
+  (lsp-auto-guess-root nil)
   (lsp-prefer-capf t)
   (lsp-completion-at-point nil)
   (read-process-output-max (* 1024 1024))
   (lsp-idle-delay 0.5)
   (lsp-clients-clangd-args nil)
-  :commands lsp)
+  :commands lsp
+  :config
+  (setq lsp-disabled-clients '(ts-ls typescript-language-server eslint javascript-language-server))
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]org\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]amazon\\'"))
 
 (use-package lsp-ui
   :ensure t

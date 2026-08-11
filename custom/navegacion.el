@@ -1,6 +1,13 @@
-;;; navegacion.el --- Summary
+2;;; navegacion.el --- Summary
 ;;; Commentary:
 ;;; Code:
+
+;; Load helm-core first to avoid autoload issues
+(use-package helm-core
+  :ensure t
+  :demand t)
+
+(global-unset-key (kbd "s-q"))
 
 (setq org-reveal-root               "http://cdn.jsdelivr.net/reveal.js/3.0.0/"
       uniquify-buffer-name-style    'forward)
@@ -10,10 +17,52 @@
 (global-set-key (kbd "C-c C-t") 'vterm)
 (fset 'yes-or-no-p 'y-or-n-p)
 
+(when (eq system-type 'darwin)
+  (setq ns-command-modifier 'meta
+        ns-option-modifier 'super))
+
 
 (use-package tramp
   :custom
-  (tramp-default-method "sshx"))
+  (tramp-default-method "sshx")
+  (tramp-verbose 2)
+  (vc-ignore-dir-regexp
+   (format "\\(%s\\)\\|\\(%s\\)"
+              vc-ignore-dir-regexp
+              tramp-file-name-regexp))
+  (tramp-inline-compress-start-size 1000000)
+  (tramp-backup-directory-alist backup-directory-alist)
+  (remote-file-name-inhibit-cache t)
+  (tramp-use-scp-direct-remote-copying t)
+  (remote-file-name-inhibit-auto-save-visited t)
+  (tramp-completion-reread-directory-timeout nil)
+  (tramp-copy-size-limit (* 1024 1024))
+  (magit-tramp-pipe-stty-settings 'pty)
+  (tramp-ssh-controlmaster-options
+   (concat "-o ControlPath=/tmp/ssh-%%r@%%h:%%p "
+           "-o ControlMaster=auto "
+           "-o ControlPersist=yes "
+           "-o Compression=yes"))
+  (projectile-mode-line "Projectile")
+  :config
+  (add-to-list 'backup-directory-alist
+             (cons tramp-file-name-regexp nil))
+  (connection-local-set-profile-variables
+   'remote-direct-async-prcess
+   '((tramp-direct-async-process . t)))
+  (connection-local-set-profiles
+   '(:application-tramp :protocol "scp")
+   'remote-direct-async-process)
+  (with-eval-after-load 'tramp
+    (with-eval-after-load 'compile
+      (remove-hook 'compilation-mode-hook #'tramp-compile-disable-ssh-controlmaster-options)))
+  (remove-hook 'evil-insert-state-exit-hook #'doom-modeline-update-buffer-file-name)
+  (remove-hook 'find-file-hook #'doom-modeline-update-buffer-file-name)
+  (remove-hook 'find-file-hook 'forge-bug-reference-setup)
+  (defadvice projectile-project-root (around ignore-remote first activate)
+    (unless (file-remote-p default-directory) ad-do-it)))
+
+;; (benchmark-run 1 (find-file "/sshx:cloud:/tmp/foo1.txt"))
 
 (use-package tramp-term
   :ensure t)
@@ -72,9 +121,15 @@
   :bind ("C-c t" . google-translate-smooth-translate))
 
 
+(with-eval-after-load 'helm-files
+  (defun helm-ff--in-backup-directory ()
+    (when backup-directory-alist
+      (cl-loop for (_p . f) in backup-directory-alist
+               when f
+               thereis (file-equal-p f helm-ff-default-directory)))))
+
 (use-package helm
   :ensure t
-  :init
   :bind  (("M-x" . helm-M-x)
           ("C-x C-f" . helm-find-files)
           ("C-c h g" . helm-google-suggest)
@@ -94,6 +149,7 @@
   (helm-buffers-fuzzy-matching           t)
   (helm-recentf-fuzzy-match              t)
   :config
+  (setq helm-ff-backup-directory         "~/.emacs.d/backups")
   (when (executable-find "curl")
     (setq helm-net-prefer-curl t))
   (helm-mode))
@@ -122,6 +178,9 @@
   (git-commit-summary-max-length 50)
   (magit-auto-revert-mode nil)
   (magit-show-long-lines-warning nil)
+  (magit-commit-show-diff nil)
+  (magit-branch-direct-configure nill)
+  (magit-refresh-status-buffer nil)
   :bind (("C-x g" . magit-status)
          :map magit-mode-map
          ("C-c C-p" . magit-push-other)))
@@ -301,6 +360,15 @@
         fzf/grep-command "grep -nrH"
         fzf/position-bottom t
         fzf/window-height 15))
+
+
+(use-package ultra-scroll
+  :vc (:url "https://github.com/jdtsmith/ultra-scroll") ; if desired (emacs>=v30)
+  :init
+  (setq scroll-conservatively 3 ; or whatever value you prefer, since v0.4
+        scroll-margin 0)        ; important: scroll-margin>0 not yet supported
+  :config
+  (ultra-scroll-mode 1))
 
 (provide 'navegacion)
 ;;; navegacion.el ends here

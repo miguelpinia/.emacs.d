@@ -2,24 +2,64 @@
 (require 'warnings)
 (setq byte-compile-warnings '(cl-functions))
 
+;; Load helm-core early to fix autoload issues
+(unless package-archive-contents
+  (package-refresh-contents))
+(unless (package-installed-p 'helm-core)
+  (package-install 'helm-core))
+(require 'helm-core)
+
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'load-path "~/.emacs.d/custom/")
 ;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
+
+;; Disable LSP in org directories
+(defun disable-lsp-in-org-dirs ()
+  "Disable LSP mode in org directories."
+  (when (and buffer-file-name
+             (string-match-p "/org/" buffer-file-name))
+    (setq-local lsp-disabled-clients '(ts-ls typescript-language-server eslint))))
+
+;; Disable tide in org directories
+(defun disable-tide-in-org-dirs ()
+  "Disable tide in org directories."
+  (when (and buffer-file-name
+             (string-match-p "/org/" buffer-file-name))
+    (setq-local tide-mode nil)))
+
+(add-hook 'find-file-hook 'disable-lsp-in-org-dirs)
+(add-hook 'find-file-hook 'disable-tide-in-org-dirs)
+
 (setq user-full-name "Miguel Piña"
-      user-mail-address "miguel_pinia@ciencias.unam.mx"
+      user-mail-address "mangelpa@amazon.com"
       package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")
-                         ("org" . "http://orgmode.org/elpa/")
-                         ("gnu" . "https://elpa.gnu.org/packages/")
-                         ("tromey" . "http://tromey.com/elpa/"))
-      package-archive-priorities '(("org" . 100)
-                                   ("melpa" . 80)
-                                   ("melpa-stable" . 60)
-                                   ("gnu" . 50)
-                                   ("tromey" . 30)))
+                         ("melpa"        . "https://melpa.org/packages/")
+                         ("org"          . "http://orgmode.org/elpa/")
+                         ("gnu"          . "https://elpa.gnu.org/packages/")
+                         ("tromey"       . "http://tromey.com/elpa/")
+                         ("nongnu"       . "https://elpa.nongnu.org/nongnu/"))
+      package-archive-priorities '(("org"          . 100)
+                                   ("melpa"        . 60)
+                                   ("melpa-stable" . 80)
+                                   ("nongnu"       . 80)
+                                   ("gnu"          . 50)
+                                   ("tromey"       . 30)))
 
 (setq warning-minimum-level :error
       warning-suppress-log-types '((:warning)))
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
 (package-initialize)
 (unless package-archive-contents
@@ -31,28 +71,28 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-;; (add-to-list 'load-path "~/.emacs.d/codeium.el")
+(add-to-list 'load-path "~/.emacs.d/custom/")
+;;(load "test.el")
+(load "setup-org.el")
+(load "amazon.el")
 (load "ui.el")
 (load "edicion.el")
 (load "navegacion.el")
+(load "terminal.el")
 (load "lsp-support.el")
 (load "setup-js.el")
 (load "latex-setup.el")
-(load "setup-org.el")
-(load "terminal.el")
 (load "setup-md.el")
 (load "setup-sql.el")
 (load "setup-py.el")
 (load "setup-cpp.el")
 ;;(load "setup-php.el")
 (load "setup-clj.el")
-(load "setup-cpp.el")
-;; (load "setup-codeium.el")
 
 
 
 
-(setq exec-path (append exec-path '("~/.nvm/versions/node/v20.10.0/bin")))
+(setq exec-path (append exec-path '("~/.local/share/nvm/v18.20.8/bin")))
 ;; (setq exec-path (append exec-path '()))
 
 (custom-set-variables
@@ -60,19 +100,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(codeium/metadata/api_key "3d06f00f-d24e-45a8-80f8-c4a78b76d6d7")
- '(company-show-quick-access t nil nil "Customized with use-package company")
+ '(company-show-quick-access nil nil nil "Customized with use-package company")
  '(custom-safe-themes
-   '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default))
+   '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223"
+     "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa"
+     default))
  '(elpy-shell-use-project-root t)
  '(flycheck-checker-error-threshold 2000)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
- '(org-agenda-files nil nil nil "Customized with use-package org")
  '(org-format-latex-options
-   '(:foreground default :background default :scale 1.7 :html-foreground "Black" :html-background "Transparent" :html-scale 1.0 :matchers
-                 ("begin" "$1" "$" "$$" "\\(" "\\[")))
- '(package-selected-packages
-   '(plz ellama lorem-ipsum lua-mode ng2-mode ditaa-mode quarto-mode codeium edit-indirect org-journal lsp-grammarly helm-xref dap-cpptools procress doom-modeline rainbow-mode beacon helm-tramp org-re-reveal helm-lsp dap-java lsp-java which-key dap-chrome dap-mode lsp-ui lsp-mode company magit-todos flyspell-correct-helm flyspell-correct flycheck-clj-kondo flycheck-clj-condo cider docker-compose-mode dockerfile-mode fzf dired-git-info js-mode pyvenv-auto python pyvenv oc tex modern-cpp-font-lock cpp-auto-include disaster plantuml-mode cmake-mode vterm clj-refactor helm-bufler bufler ob-http power-mode php-mode helm-ag olivetti npm anzu nyan-mode ob-restclient restclient org-ref forge auctex bibtex-completion org-tree-slide tramp-term org-bullets js-import rjsx-mode emmet-mode react-snippets prettier-js js-react-redux-yasnippets tern-auto-complete tern tide ag yasnippet nov resize-window helm-swoop ace-window hydra transpose-frame org-noter-pdftools org-pdftools pdf-tools helm-bibtex helm-projectile helm google-translate magit-gitflow dired-isearch smartparens paredit undo-tree isearch-dabbrev use-package rainbow-delimiters projectile dracula-theme dashboard all-the-icons-dired))
+   '(:foreground default :background default :scale 1.7 :html-foreground
+                 "Black" :html-background "Transparent" :html-scale
+                 1.0 :matchers ("begin" "$1" "$" "$$" "\\(" "\\[")))
+ '(package-selected-packages nil)
  '(safe-local-variable-values
    '((eval org-babel-ref-resolve "skeletons")
      (eval add-hook 'before-save-hook
@@ -80,6 +120,10 @@
              (org-babel-ref-resolve "process-export-filenames")))
      (eval org-babel-ref-resolve "export-setup")
      (org-export-initial-scope . buffer)))
+ '(tramp-term-host-shells '(("cloud" . bash)))
+ '(tramp-verbose 1)
+ '(remote-file-name-inhibit-cache nil)
+ '(tramp-completion-reread-directory-timeout nil)
  '(warning-suppress-log-types '((:error)))
  '(warning-suppress-types '((emacs) (use-package) (use-package))))
 (custom-set-faces
@@ -87,4 +131,5 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(hl-line ((t (:extend t :background "gray40"))))
+ '(region ((t (:extend t :background "purple2" :foreground "grey100" :weight bold)))))

@@ -88,18 +88,18 @@
   (add-to-list 'clojure--prettify-symbols-alist '("and" . ?∧))
   (add-to-list 'clojure--prettify-symbols-alist '("nil" . ?∅)))
 
-  (use-package cider
-    :ensure t
-    :config
-    (add-hook 'cider-mode-hook 'eldoc-mode)
-    (add-hook 'cider-repl-mode-hook 'paredit-mode)
-    (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
-    (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
-    :custom
-    (cider-repl-result-prefix ";; => ")
-    (cider-repl-pop-to-buffer-on-connect t)
-    (cider-show-error-buffer t)
-    (cider-repl-history-file "~/.emacs.d/cider-history"))
+(use-package cider
+  :ensure t
+  :config
+  (add-hook 'cider-mode-hook 'eldoc-mode)
+  (add-hook 'cider-repl-mode-hook 'paredit-mode)
+  (add-to-list 'auto-mode-alist '("\\.edn$" . clojure-mode))
+  (add-to-list 'auto-mode-alist '("\\.boot$" . clojure-mode))
+  :custom
+  (cider-repl-result-prefix ";; => ")
+  (cider-repl-pop-to-buffer-on-connect t)
+  (cider-show-error-buffer t)
+  (cider-repl-history-file "~/.emacs.d/cider-history"))
 
 
 ;; (use-package cider
@@ -133,6 +133,13 @@
   :ensure t)
 (use-package inf-lisp
   :ensure t)
+
+(use-package scala-mode
+  :ensure
+  :interpreter
+    ("scala" . scala-mode)
+  )
+
 
 ;; (eval-when-compile
 ;;    (require 'cl-lib))

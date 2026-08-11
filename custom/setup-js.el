@@ -11,25 +11,37 @@
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
-(use-package typescript-mode :ensure t)
+(use-package web-mode
+  :ensure t
+  :mode "\\.tsx\\'"
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-code-indent-offset 2))
+
+(use-package typescript-mode
+  :ensure t
+  :hook (typescript-mode . (lambda ()
+                             (setq-local tab-width 2)
+                             (setq-local typescript-indent-level 2)
+                             (setq-local indent-tabs-mode nil))))
 
 (use-package tide :ensure t
   :after (typescript-mode company flycheck)
   :custom (company-tooltip-align-annotations t))
 
 (defun tide-setup-mode ()
-    (interactive)
-    (tide-setup)
-    (flycheck-mode +1)
-    (setq flycheck-check-syntax-automatically '(save mode-enabled))
-    (eldoc-mode +1)
-    (tide-hl-identifier-mode +1)
-    (setq tide-format-options
-          '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
-            :placeOpenBraceOnNewLineForFunctions nil)))
+  (interactive)
+  (tide-setup)
+      (flycheck-mode +1)
+      (setq flycheck-check-syntax-automatically '(save mode-enabled))
+      (eldoc-mode +1)
+      (tide-hl-identifier-mode +1)
+      (setq tide-format-options
+            '(:insertSpaceAfterFunctionKeywordForAnonymousFunctions t
+              :placeOpenBraceOnNewLineForFunctions nil)))
 
-(add-hook 'js-mode-hook 'tide-setup-mode)
-(add-hook 'js-mode-hook 'tide-hl-identifier-mode)
+;; (add-hook 'js-mode-hook 'tide-setup-mode)
+;; (add-hook 'js-mode-hook 'tide-hl-identifier-mode)
 ;; (add-hook 'before-save-hook 'tide-format-before-save)
 
 ;; (flycheck-add-mode 'javascript-eslint 'web-mode)
@@ -91,7 +103,7 @@
 
 (use-package rjsx-mode
   :ensure t
-  :mode ("\\.js\\'")
+  :mode ("\\.jsx?\\'")
   :config
   (add-hook 'rjsx-mode-hook (lambda()
                               (setq-default flycheck-disabled-checkers

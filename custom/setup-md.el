@@ -23,12 +23,18 @@
 
 (use-package markdown-mode
   :ensure t
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
   :custom (auto-mode-alist
            (append
             auto-mode-alist
             '(("\\.text\\'" . markdown-mode)
               ("\\.markdown\\'" . markdown-mode)
-              ("\\.md\\'" . markdown-mode))))
+              ("\\.md\\'" . markdown-mode)))
+           markdown-command "multimarkdown"
+           markdown-hide-urls t)
+  :bind (:map markdown-mode-map ("C-c C-e" . markdown-do))
   :hook (markdown-mode-hook . (lambda () (flyspell-mode 1))))
 
 (use-package quarto-mode

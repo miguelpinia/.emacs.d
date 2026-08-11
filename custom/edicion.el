@@ -207,6 +207,18 @@ The date is inserted without the day of the week."
 
 (global-set-key "\C-x\M-d" `insdate-insert-current-date)
 
+(defun get-current-time ()
+  (format-time-string "%H:%M" (current-time)))
+
+(defun insdate-insert-current-time ()
+  "Insert current time in HH:MM format."
+  (interactive)
+  (insert (get-current-time)))
+
+(defun insdate-insert-current-time-tag ()
+  (interactive)
+  (insert (format "[%s]: " (get-current-time))))
+
 (use-package dired-isearch
   :ensure t
   :config

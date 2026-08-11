@@ -32,6 +32,10 @@
   (dashboard-items '((agenda . 5)
                      (recents . 5)
                      (projects . 5)))
+  (dashboard-week-agenda t)
+  (dashboard-item-names '(("Recent Files:"               . "Recently opened files:")
+                          ("Agenda for today:"           . "Today's agenda:")
+                          ("Agenda for the coming week:" . "Agenda:")))
   (dashboard-insert-init-info t)
   (dashboard-insert-init-info t)
   (dashboard-set-file-icons t)
@@ -45,13 +49,16 @@
   :hook
   (dashboard-mode . (lambda () (linum-mode -1)))
   :config
-  (dashboard-setup-startup-hook))
+  (dashboard-setup-startup-hook)
+  (add-to-list 'dashboard-items '(agenda) t))
 
 ;; (add-to-list 'custom-theme-load-path "~/.emacs.d/temas")
 (use-package dracula-theme
   :ensure t
   :config
   (load-theme 'dracula t))
+
+(setq org-src-fontify-natively t)
 
 ;; (setq-default
 ;;  mode-line-format
@@ -373,7 +380,7 @@ It comming from flymake in the mode-line (if available)."
 ;;                                :foreground ,bg-dark
 ;;                                :underline nil))
 
-(defconst miguel/font "input 13")
+(defconst miguel/font "input 16")
 (set-frame-font miguel/font)
 (setq-default column-number-mode t ;; Muestra la linea y la columna.
               frame-title-format "%b (%f)" ;; Path completo en la barra de títulos.
@@ -384,7 +391,7 @@ It comming from flymake in the mode-line (if available)."
 (defun remove-bars ()
   "Elimina la barra de menús, de scroll y de herramientas."
   (interactive)
-  (menu-bar-mode -1)
+  (menu-bar-mode 1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1))
 
@@ -395,6 +402,8 @@ It comming from flymake in the mode-line (if available)."
   "Actualiza la fuente del frame."
   (interactive)
   (set-frame-font miguel/font))
+
+(update-font)
 
 (defun fullscreen ()
   "Función para poner a Emacs en pantalla completa."
@@ -423,7 +432,7 @@ It comming from flymake in the mode-line (if available)."
 
 (use-package rainbow-mode
   :ensure t
-  :hook css-mode)
+  :hook (text-mode prog-mode))
 
 ;; (set-frame-parameter (selected-frame) 'alpha '(92 . 50))
 ;; (add-to-list 'default-frame-alist '(alpha . (92 . 50)))
