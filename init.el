@@ -2,16 +2,7 @@
 (require 'warnings)
 (setq byte-compile-warnings '(cl-functions))
 
-;; Load helm-core early to fix autoload issues
-(unless package-archive-contents
-  (package-refresh-contents))
-(unless (package-installed-p 'helm-core)
-  (package-install 'helm-core))
-(require 'helm-core)
-
-(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'load-path "~/.emacs.d/custom/")
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
 
 ;; Disable LSP in org directories
 (defun disable-lsp-in-org-dirs ()
@@ -31,23 +22,20 @@
 (add-hook 'find-file-hook 'disable-tide-in-org-dirs)
 
 (setq user-full-name "Miguel Piña"
-      user-mail-address "mangelpa@amazon.com"
+      user-mail-address "miguel_pinia@ciencias.unam.mx"
       package-archives '(("melpa-stable" . "https://stable.melpa.org/packages/")
                          ("melpa"        . "https://melpa.org/packages/")
-                         ("org"          . "http://orgmode.org/elpa/")
                          ("gnu"          . "https://elpa.gnu.org/packages/")
-                         ("tromey"       . "http://tromey.com/elpa/")
                          ("nongnu"       . "https://elpa.nongnu.org/nongnu/"))
-      package-archive-priorities '(("org"          . 100)
-                                   ("melpa"        . 60)
+      package-archive-priorities '(("melpa"        . 60)
                                    ("melpa-stable" . 80)
                                    ("nongnu"       . 80)
-                                   ("gnu"          . 50)
-                                   ("tromey"       . 30)))
+                                   ("gnu"          . 50)))
 
 (setq warning-minimum-level :error
       warning-suppress-log-types '((:warning)))
 
+;; straight.el bootstrap (for packages not available from an ELPA archive)
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -71,10 +59,24 @@
   (unless (package-installed-p package)
     (package-install package)))
 
-(add-to-list 'load-path "~/.emacs.d/custom/")
-;;(load "test.el")
+(require 'use-package)
+(setq use-package-always-defer t)
+
+;; Ensure compat-31 is loaded for packages requiring Emacs 31 features
+(straight-use-package 'compat)
+(require 'compat)
+
+;; Machine-local configuration (gitignored, optional).
+;;
+;; Loaded before the modules so it can define host-specific values they consume
+;; (for example `miguel/org-root'), and set up internal-only packages. Settings
+;; that must override a module use `with-eval-after-load' inside that file.
+(let ((local (expand-file-name "custom/local.el" user-emacs-directory)))
+  (when (file-exists-p local)
+    (load local nil 'nomessage)))
+
+;; Module loads
 (load "setup-org.el")
-(load "amazon.el")
 (load "ui.el")
 (load "edicion.el")
 (load "navegacion.el")
@@ -86,26 +88,18 @@
 (load "setup-sql.el")
 (load "setup-py.el")
 (load "setup-cpp.el")
-;;(load "setup-php.el")
 (load "setup-clj.el")
 
-
-
-
 (setq exec-path (append exec-path '("~/.local/share/nvm/v18.20.8/bin")))
-;; (setq exec-path (append exec-path '()))
+
+(menu-bar-mode -1)
 
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(company-show-quick-access nil nil nil "Customized with use-package company")
  '(custom-safe-themes
    '("c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223"
      "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa"
      default))
- '(elpy-shell-use-project-root t)
  '(flycheck-checker-error-threshold 2000)
  '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
  '(org-format-latex-options
@@ -121,15 +115,56 @@
      (eval org-babel-ref-resolve "export-setup")
      (org-export-initial-scope . buffer)))
  '(tramp-term-host-shells '(("cloud" . bash)))
- '(tramp-verbose 1)
- '(remote-file-name-inhibit-cache nil)
- '(tramp-completion-reread-directory-timeout nil)
  '(warning-suppress-log-types '((:error)))
  '(warning-suppress-types '((emacs) (use-package) (use-package))))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(hl-line ((t (:extend t :background "gray40"))))
+ '(hl-line ((t (:extend t :background "#2f2f2f"))))
  '(region ((t (:extend t :background "purple2" :foreground "grey100" :weight bold)))))
+
+;; When running as daemon, C-x C-c disconnects the client instead of killing the daemon
+(when (daemonp)
+  (global-set-key (kbd "C-x C-c") #'delete-frame))
+
+;; Handle terminal focus events to prevent OI insertion when switching tabs
+(defun my/setup-terminal-focus-events ()
+  "Map terminal focus escape sequences so they don't insert OI."
+  (when (not (display-graphic-p))
+    (define-key input-decode-map "\e[I" [focus-in])
+    (define-key input-decode-map "\e[O" [focus-out])))
+(add-hook 'tty-setup-hook #'my/setup-terminal-focus-events)
+(define-key global-map [focus-in] #'ignore)
+(define-key global-map [focus-out] #'ignore)
+
+;; Explicitly disable terminal focus reporting (mode 1004) so iTerm2 stops
+;; sending \e[I/\e[O sequences that race with the decode map during fast
+;; tmux popup open/close cycles.
+(defun my/disable-terminal-focus-reporting (frame)
+  "Send mode 1004 disable to the terminal for FRAME."
+  (when (frame-parameter frame 'tty)
+    (send-string-to-terminal "\e[?1004l" (frame-terminal frame))))
+(dolist (frame (frame-list))
+  (my/disable-terminal-focus-reporting frame))
+(add-hook 'after-make-frame-functions #'my/disable-terminal-focus-reporting)
+
+;; OSC 52 clipboard integration for terminal/daemon
+(unless (display-graphic-p)
+  (setq xterm-set-window-title nil)
+  (defun my/osc52-copy (text)
+    "Copy TEXT to system clipboard via OSC 52."
+    (let* ((encoded (base64-encode-string (encode-coding-string text 'utf-8) t))
+           (seq (concat "\e]52;c;" encoded "\a")))
+      (if (frame-parameter nil 'tty)
+          (send-string-to-terminal seq (frame-terminal))
+        (dolist (frame (frame-list))
+          (when (frame-parameter frame 'tty)
+            (send-string-to-terminal seq (frame-terminal frame)))))))
+  (setq interprogram-cut-function #'my/osc52-copy))
+
+;; Work around compat's global `all' function (arity 2) colliding with
+;; company-dabbrev-other-buffers' default symbol value `all'. In
+;; company-dabbrev--fetch the pcase tests (pred functionp) before the
+;; literal `all, so once compat makes `all' fboundp company calls
+;; (funcall 'all (current-buffer)) -> wrong-number-of-arguments (2 . 2) 1.
+;; Returning the symbol `all' from a function preserves all-buffers search.
+(with-eval-after-load 'company-dabbrev
+  (setq company-dabbrev-other-buffers (lambda (_buf) 'all)))

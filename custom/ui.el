@@ -4,20 +4,8 @@
 
 (use-package rainbow-delimiters :ensure t)
 
-(require 'battery)
-(setq display-battery-mode t)
-
 (defconst package-init-time (emacs-init-time)
   "Record down the package initialize time.")
-
-(use-package all-the-icons :ensure t)
-
-(use-package all-the-icons-dired
-  :after all-the-icons
-  :ensure t
-  :defer t
-  :hook
-  (dired-mode . all-the-icons-dired-mode))
 
 (use-package dashboard
   :ensure t
@@ -38,72 +26,20 @@
                           ("Agenda for the coming week:" . "Agenda:")))
   (dashboard-insert-init-info t)
   (dashboard-insert-init-info t)
-  (dashboard-set-file-icons t)
-  (dashboard-set-heading-icons t)
-  (dashboard-icon-type 'nerd-icons)
-  (dashboard-heading-icons '((recents   . "nf-oct-file")
-                             (bookmarks . "nf-oct-bookmark")
-                             (agenda    . "nf-oct-calendar")
-                             (projects  . "nf-oct-file_directory")
-                             (registers . "nf-oct-database")))
   :hook
-  (dashboard-mode . (lambda () (linum-mode -1)))
+  (dashboard-mode . (lambda () (display-line-numbers-mode -1)))
   :config
   (dashboard-setup-startup-hook)
   (add-to-list 'dashboard-items '(agenda) t))
 
-;; (add-to-list 'custom-theme-load-path "~/.emacs.d/temas")
-(use-package dracula-theme
-  :ensure t
-  :config
-  (load-theme 'dracula t))
+(load-theme 'modus-vivendi t)
+;; Catppuccin (macchiato) experiment — disabled; preferred modus-vivendi.
+;; (straight-use-package '(catppuccin :host github :repo "catppuccin/emacs"))
+;; (setq catppuccin-flavor 'macchiato)
+;; (load-theme 'catppuccin :no-confirm)
+(menu-bar-mode -1)
 
 (setq org-src-fontify-natively t)
-
-;; (setq-default
-;;  mode-line-format
-;;  '(
-;;    ;; point position
-;;    (8 "%e "
-;;       (:eval (propertize "%l:" 'face 'font-lock-comment-face))
-;;       (:eval (propertize "%c"  'face (if (>= (current-column) 80)
-;;                                          'font-lock-warning-face
-;;                                        'font-lock-comment-face))))
-;;    ;; major modes
-;;    ;; not interested in minor modes
-;;    ;; (can always be listed with C-h m)
-;;    (:propertize "%m: " face font-lock-variable-name-face
-;;                 help-echo buffer-file-coding-system)
-;;    ;; shortened directory
-;;    (:propertize (:eval (shorten-directory default-directory 30))
-;;                 face font-lock-comment-face)
-;;    ;; buffer name
-;;    (:propertize "%b" face font-lock-doc-face)
-
-;;    ;; left align
-;;    (:eval (propertize " " 'display '((space :align-to (- right-fringe 36)))))
-
-;;    ;; nyan cat saves the day
-;;    (:propertize "|" face vertical-border)
-;;    (:eval (when nyan-mode (nyan-create)))
-;;    (:propertize "|" face vertical-border)
-
-;;    ;; read-only / changed
-;;    (:eval
-;;     (cond (buffer-read-only
-;;            (propertize "read-only" 'face 'font-lock-warning-face))
-;;           ((buffer-modified-p)
-;;            (propertize "* " 'face 'font-lock-warning-face))
-;;           (t "  ")))))
-
-;; ;; rename a few major modes
-;; (add-hook 'emacs-lisp-mode-hook
-;;           (lambda() (setq mode-name "EL")))
-
-;; (add-hook 'haskell-mode-hook
-;;           (lambda() (setq mode-name "Haskell")))
-
-;; (load-theme 'dracula t)
 
 (use-package anzu
   :ensure t
@@ -117,12 +53,9 @@ It containing LEFT, and RIGHT aligned respectively."
   (let* ((available-width (- (window-total-width) (length left) )))
     (format (format "%%s %%%ds" available-width) left right)))
 
-(set-frame-parameter (selected-frame) 'internal-border-width 10)
-(setq x-underline-at-descent-line t)
 (setq-default line-spacing 0)
 
 (blink-cursor-mode 0)
-(fringe-mode '(0 . 0))
 
 (defvar current-time-format "%a %H:%M"
   "Format of date to insert with `insert-current-time' func.
@@ -226,7 +159,7 @@ It containing LEFT and RIGHT, aligned respectively."
                             (t
                              (setq face 'mood-line-status-neutral)
                              (propertize "✔ " 'face face)))
-                      (propertize (substring vc-mode (+ (if (eq backend 'Hg) 2 3) 2))
+                      (propertize (concat " " (substring vc-mode (+ (if (eq backend 'Hg) 2 3) 2)))
                                   'face face
                                   'mouse-face face)
                       "  "))))))
@@ -278,7 +211,8 @@ It containing LEFT and RIGHT, aligned respectively."
 
 (defun mood-line-segment-major-mode ()
   "Displays the current major mode in the mode-line."
-  (concat (format-mode-line mode-name 'mood-line-major-mode) "  "))
+  (concat (propertize " " 'face 'mood-line-major-mode)
+          (format-mode-line mode-name 'mood-line-major-mode) "  "))
 
 
 (defun mood-line-segment-flycheck ()
@@ -301,14 +235,14 @@ It comming from flymake in the mode-line (if available)."
                        (format-mode-line
                         (list
                          (mood-line-segment-modified)
-                         (propertize "File " 'face 'mood-line-status-success)
+                         (propertize " " 'face 'mood-line-status-success)
                          (propertize "%b " 'face 'mood-line-buffer-name)
                          '(:eval (when (and buffer-file-name (buffer-modified-p))
                                    (propertize "(modified) "
                                                'face 'mood-line-status-warning)))
                          (mood-line-segment-anzu)
                          "- "
-                         (propertize (format-time-string current-time-format (current-time))
+                         (propertize (concat " " (format-time-string current-time-format (current-time)))
                                      'face `(:weight light))))
                        (format-mode-line
                         (list
@@ -325,32 +259,25 @@ It comming from flymake in the mode-line (if available)."
                         ))))
 
 (set-face-attribute 'header-line nil
-                    :height 110
-                    :underline "white")
-;; (set-face-attribute 'mode-line nil
-;;                     :height 1
-;;                     :underline "white"
-;;                     :box nil)
-;; (set-face-attribute 'mode-line-inactive nil
-;;                     :box nil
-;;                     :inherit 'mode-line)
-;; (set-face-attribute 'mode-line-buffer-id nil
-;;                     :weight 'light)
+                    :underline t
+                    :weight 'bold)
 
-(use-package doom-modeline
-  :ensure t
-  :hook (after-init . doom-modeline-mode)
-  :custom
-  (doom-modeline-project-detection 'auto)
-  (doom-modeline-window-width-limit 80)
-  (doom-modeline-icon t)
-  (doom-modeline-major-mode-icon t)
-  (doom-modeline-major-mode-color-icon t)
-  (doom-modeline-buffer-file-name-style 'truncate-except-project)
-  (doom-modeline-buffer-name t)
-  (doom-modeline-highlight-modified-buffer-name t)
-  (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
-  (doom-modeline-battery t))
+;; doom-modeline disabled: the hand-rolled header-line above is now the single
+;; statusline. Re-enable by uncommenting if you want the bottom mode-line back.
+;; (use-package doom-modeline
+;;   :ensure t
+;;   :hook (after-init . doom-modeline-mode)
+;;   :custom
+;;   (doom-modeline-project-detection 'auto)
+;;   (doom-modeline-window-width-limit 80)
+;;   (doom-modeline-icon nil)
+;;   (doom-modeline-major-mode-icon nil)
+;;   (doom-modeline-major-mode-color-icon nil)
+;;   (doom-modeline-buffer-file-name-style 'truncate-except-project)
+;;   (doom-modeline-buffer-name t)
+;;   (doom-modeline-highlight-modified-buffer-name t)
+;;   (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+;;   (doom-modeline-battery nil))
 
 ;; setup
 
@@ -358,33 +285,13 @@ It comming from flymake in the mode-line (if available)."
   :custom
   (olivetti-body-width 120))
 
-;; (defun free-distraction ()
-;;   "Documentation."
-;;   (org-mode . ((eval . (progn (turn-off-auto-fill)
-;; 			                  (text-scale-set 1)
-;; 			                  (turn-on-olivetti-mode)))
-;; 	           (fill-column              . 80)
-;; 	           (visual-fill-column-width . 80)
-;; 	           (olivetti-body-width      . 80)
-;; 	           (mode . visual-line)
-;; 	           (mode . visual-fill-column))))
-
-;; (set-face-attribute 'org-document-title
-;;                     (:inherit variable-pitch
-;;                                :height 1.3
-;;                                :weight normal
-;;                                :foreground ,gray)
-;;                     (:inherit nil
-;;                                :family ,et-font
-;;                                :height 1.8
-;;                                :foreground ,bg-dark
-;;                                :underline nil))
-
 (defconst miguel/font "input 16")
-(set-frame-font miguel/font)
+(ignore-errors (set-frame-font miguel/font))
 (setq-default column-number-mode t ;; Muestra la linea y la columna.
               frame-title-format "%b (%f)" ;; Path completo en la barra de títulos.
               ring-bell-function 'ignore)
+(setq display-line-numbers-type t)
+(global-display-line-numbers-mode 1)
 (global-hl-line-mode 1)
 (show-paren-mode 1)
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
@@ -403,7 +310,7 @@ It comming from flymake in the mode-line (if available)."
   (interactive)
   (set-frame-font miguel/font))
 
-(update-font)
+(ignore-errors (update-font))
 
 (defun fullscreen ()
   "Función para poner a Emacs en pantalla completa."
@@ -416,26 +323,13 @@ It comming from flymake in the mode-line (if available)."
 (global-set-key (kbd "<f11>") 'fullscreen)
 
 (defun hide-lat-num ()
-  (linum-mode 0))
+  (display-line-numbers-mode 0))
 
 (global-prettify-symbols-mode 1)
-
-(use-package beacon
-  :ensure t
-  :custom
-  (beacon-blink-duration 1)
-  (beacon-color "red")
-  (beacon-size 60)
-  (beacon-push-mark 10)
-  :config
-  (beacon-mode 1))
 
 (use-package rainbow-mode
   :ensure t
   :hook (text-mode prog-mode))
-
-;; (set-frame-parameter (selected-frame) 'alpha '(92 . 50))
-;; (add-to-list 'default-frame-alist '(alpha . (92 . 50)))
 
 (provide 'ui)
 ;;; ui.el ends here

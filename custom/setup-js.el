@@ -5,11 +5,18 @@
 (use-package js
   :custom
   (indent-tabs-mode nil)
-  (js-indent-level 2)
-  (js2-global-externs '("module" "require" "assert" "setInterval" "console" "__dirname__"))
-  (js2-basic-offsets 2))
+  (js-indent-level 2))
 
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(use-package web-mode
+  :ensure t
+  :mode ("\\.tsx\\'" "\\.jsx\\'" "\\.js\\'")
+  :hook ((web-mode . lsp-deferred)
+         (web-mode . hs-minor-mode))
+  :custom
+  (web-mode-markup-indent-offset 2)
+  (web-mode-code-indent-offset 2)
+  (web-mode-css-indent-offset 2)
+  (web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
 
 (use-package web-mode
   :ensure t
@@ -20,14 +27,16 @@
 
 (use-package typescript-mode
   :ensure t
-  :hook (typescript-mode . (lambda ()
-                             (setq-local tab-width 2)
-                             (setq-local typescript-indent-level 2)
-                             (setq-local indent-tabs-mode nil))))
+  :hook ((typescript-mode . hs-minor-mode)
+         (typescript-mode . (lambda ()
+                              (setq-local tab-width 2)
+                              (setq-local typescript-indent-level 2)
+                              (setq-local indent-tabs-mode nil)))))
 
-(use-package tide :ensure t
-  :after (typescript-mode company flycheck)
-  :custom (company-tooltip-align-annotations t))
+;; tide replaced by lsp-mode + typescript-language-server
+;; (use-package tide :ensure t
+;;   :after (typescript-mode company flycheck)
+;;   :custom (company-tooltip-align-annotations t))
 
 (defun tide-setup-mode ()
   (interactive)
@@ -62,8 +71,8 @@
 
 (use-package prettier-js
   :ensure t
-  :hook (rjsx-mode . prettier-js-mode)
-  (js-mode . prettier-js-mode)
+  :hook ((web-mode . prettier-js-mode)
+         (typescript-mode . prettier-js-mode))
   :custom
   (prettier-js-args '("--trailing-comma" "es5"
                       "--tab-width" "2"
@@ -90,16 +99,15 @@
   :hook (web-mode
          css-mode
          scss-mode
-         sgml-mode
-         rjsx-mode
-         js-mode)
+         sgml-mode)
   :custom
   (emmet-indent-after-insert t)
   (emmet-move-cursor-between-quotes t)
   (emmet-expand-jsx-className t)
   (emmet-preview-default t)
   :config
-  (add-to-list 'emmet-jsx-major-modes 'js-mode))
+  (add-to-list 'emmet-jsx-major-modes 'js-mode)
+  (add-to-list 'emmet-jsx-major-modes 'web-mode))
 
 (use-package rjsx-mode
   :ensure t
@@ -125,10 +133,7 @@
   :ensure t
   :config
   (require 'emmet-mode)
-  (setq-mode-local js-mode emmet-expand-jsx-className t)
-  (setq-mode-local web-mode emmet-expand-jsx-className nil))
-
-
+  (setq-mode-local web-mode emmet-expand-jsx-className t))
 
 (use-package dockerfile-mode
   :ensure t)
@@ -136,10 +141,12 @@
 (use-package docker-compose-mode
   :ensure t)
 
-(use-package ng2-mode
-  :ensure t
-  :config
-  (with-eval-after-load 'typescript-mode (add-hook 'typescript-mode-hook #'lsp)))
+(with-eval-after-load 'hideshow
+  (define-key hs-minor-mode-map (kbd "C-c h h") 'hs-hide-block)
+  (define-key hs-minor-mode-map (kbd "C-c h s") 'hs-show-block)
+  (define-key hs-minor-mode-map (kbd "C-c h c") 'hs-toggle-hiding)
+  (define-key hs-minor-mode-map (kbd "C-c h H") 'hs-hide-all)
+  (define-key hs-minor-mode-map (kbd "C-c h S") 'hs-show-all))
 
 (provide 'setup-js)
 ;;; setup-js.el ends here

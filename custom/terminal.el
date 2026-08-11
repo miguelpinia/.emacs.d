@@ -1,6 +1,5 @@
 ;;; Setup-terminal.el --- Summary
 ;;; Commentary:
-(require 'term)
 
 ;;; Code:
 
@@ -10,7 +9,7 @@
 
 (add-hook 'term-mode-hook
           (lambda() (setq yas-dont-activate t)
-            (linum-mode 0)))
+            (display-line-numbers-mode 0)))
 
 ;; (defadvice term-sentinel
 ;;     (around my-advice-term-sentinel (proc msg))
@@ -87,7 +86,6 @@ Like normal Emacs `C-k'.  Kill to end of line and put content in kill-ring."
   (add-to-list 'project-switch-commands '(ghostel-project "Ghostel") t)
   (add-to-list 'project-switch-commands '(ghostel-project-list-buffers "Ghostel buffers") t)
   (add-to-list 'ghostel-eval-cmds '("magit-status-setup-buffer" magit-status-setup-buffer)))
-
 
 
 (provide 'terminal)

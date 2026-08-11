@@ -2,8 +2,8 @@
 ;;; Commentary:
 ;;; Code:
 ;;(require 'dired+)
+
 (require 'use-package)
-(require 'linum)
 
 ;; (use-package power-mode
 ;;   :load-path "~/.emacs.d/site-lisp/power-mode.el"
@@ -29,8 +29,6 @@
               c-basic-offset 4
               indent-tabs-mode nil
               tab-width 4
-              x-select-enable-clipboard t
-              x-select-enable-primary t
               save-interprogram-paste-before-kill t
               apropos-do-all t
               mouse-yank-at-point t)
@@ -58,8 +56,8 @@
 (add-hook 'python-mode-hook 'column-enforce-mode)
 (add-hook 'java-mode-hook 'column-enforce-mode)
 (add-hook 'cc-mode-hook 'column-enforce-mode)
-(add-hook 'prog-mode-hook #'(lambda () (linum-mode)
-                              (setq linum-format "%4d \u2502 ")))
+(add-hook 'prog-mode-hook #'(lambda () (display-line-numbers-mode)
+                              (setq-local display-line-numbers t)))
 
 (global-unset-key (kbd "C-,"))
 (global-set-key (kbd "C-,") 'comment-region)
@@ -110,14 +108,14 @@
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :custom
-  (company-idle-delay 0)
+  (company-idle-delay 0.2)
   (company-echo-delay 0)
   (company-show-numbers nil)
   (company-require-match nil)
   (company-tooltip-align-annotations t)
-  (company-minimum-prefix-lenghth 0)
+  (company-minimum-prefix-length 1)
   ;; (company-backends '(company-capf))
-  (company-frontends '(company-pseudo-tooltip-frontend company-preview-frontend)))
+  (company-frontends '(company-pseudo-tooltip-frontend)))
 
 (use-package paredit
   :ensure t
@@ -134,8 +132,6 @@
   (progn
     (show-smartparens-global-mode t))
   :hook ((prog-mode markdown-mode) . turn-on-smartparens-strict-mode))
-
-(require 'smartparens)
 
 (defmacro def-pairs (pairs)
   "Foo PAIRS."
@@ -219,13 +215,7 @@ The date is inserted without the day of the week."
   (interactive)
   (insert (format "[%s]: " (get-current-time))))
 
-(use-package dired-isearch
-  :ensure t
-  :config
-  (define-key dired-mode-map (kbd "C-s") 'dired-isearch-forward)
-  (define-key dired-mode-map (kbd "C-r") 'dired-isearch-backward)
-  (define-key dired-mode-map (kbd "ESC C-s") 'dired-isearch-forward-regexp)
-  (define-key dired-mode-map (kbd "ESC C-r") 'dired-isearch-backward-regexp))
+;; dired-isearch removed from MELPA; built-in isearch works in dired
 
 (use-package dired-git-info
   :ensure t
@@ -236,32 +226,53 @@ The date is inserted without the day of the week."
   (define-key dired-mode-map ")" 'dired-gipt-info-mode)
   (add-hook 'dired-after-readin-hook 'dired-git-info-auto-enable))
 
-(autoload 'cider--make-result-overlay "cider-overlays")
-(defun endless/eval-overlay (value point)
-  "Eval overlay VALUE POINT."
-  (cider--make-result-overlay (format "%S" value)
-    :where point
-    :duration 'command)
-  value)
-(advice-add 'eval-region :around
-            (lambda (f beg end &rest r)
-              (endless/eval-overlay
-               (apply f beg end r)
-               end)))
-(advice-add 'eval-last-sexp :filter-return
-            (lambda (r)
-              (endless/eval-overlay r (point))))
-(advice-add 'eval-defun :filter-return
-            (lambda (r)
-              (endless/eval-overlay
-               r
-               (save-excursion
-                 (end-of-defun)
-                 (point)))))
+(with-eval-after-load 'cider-overlays
+  (defun endless/eval-overlay (value point)
+    "Eval overlay VALUE POINT."
+    (cider--make-result-overlay (format "%S" value)
+      :where point
+      :duration 'command)
+    value)
+  (advice-add 'eval-region :around
+              (lambda (f beg end &rest r)
+                (endless/eval-overlay
+                 (apply f beg end r)
+                 end)))
+  (advice-add 'eval-last-sexp :filter-return
+              (lambda (r)
+                (endless/eval-overlay r (point))))
+  (advice-add 'eval-defun :filter-return
+              (lambda (r)
+                (endless/eval-overlay
+                 r
+                 (save-excursion
+                   (end-of-defun)
+                   (point))))))
 
-(add-hook 'pdf-view-mode-hook 'auto-revert-mode)
+(use-package which-key :ensure t :demand t :config (which-key-mode))
 
-(use-package which-key :ensure t :config (which-key-mode))
+;; Over SSH, terminal escape sequences arrive fragmented and leak as garbage.
+;; Disable focus reporting and bracketed paste after terminal init.
+;; NOTE: do not include `modifyOtherKeys' here. Forcing it on makes the terminal
+;; encode Meta/Option combos as CSI sequences carrying a modifier bitmask, which
+;; tmux does not forward (no extended-keys/extkeys) and which the external
+;; mechanical keyboard encodes differently than the built-in one — breaking M-x.
+;; Keeping only the selection capabilities preserves OSC-52 clipboard behavior.
+(setq xterm-extra-capabilities '(getSelection setSelection))
+(defun my/disable-focus-events ()
+  "Disable xterm focus and bracketed paste reporting on this terminal."
+  (when (and (getenv "SSH_TTY")
+             (not (display-graphic-p)))
+    (send-string-to-terminal "\e[?1004l\e[?2004l")
+    (set-terminal-parameter nil 'tty-mode-set-strings
+      (seq-remove (lambda (s) (string-match-p "1004\\|2004" s))
+                  (terminal-parameter nil 'tty-mode-set-strings)))
+    (set-terminal-parameter nil 'tty-mode-reset-strings
+      (seq-remove (lambda (s) (string-match-p "1004\\|2004" s))
+                  (terminal-parameter nil 'tty-mode-reset-strings)))))
+(add-hook 'tty-setup-hook #'my/disable-focus-events)
+
+
 
 ;; (use-package dap-chrome :ensure t)
 
@@ -288,6 +299,11 @@ The date is inserted without the day of the week."
 (use-package lua-mode
   :ensure t
   )
+
+(use-package objed
+  :ensure t
+  :init
+  (add-hook 'after-init-hook 'objed-mode))
 
 (provide 'edicion)
 ;;; edicion.el ends here
