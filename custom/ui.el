@@ -9,6 +9,7 @@
 
 (use-package dashboard
   :ensure t
+  :demand t
   :custom
   (dashboard-banner-logo-title "[D I D D Y • E M A C S]")
   (dashboard-footer-icon "")
