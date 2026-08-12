@@ -39,6 +39,7 @@
 ;; modus-vivendi (the TUI theme) is built in, so it needs no package.
 (use-package dracula-theme :ensure t :defer t)
 (use-package all-the-icons :ensure t :defer t)
+(use-package nerd-icons :ensure t :defer t)
 (use-package all-the-icons-dired
   :ensure t :defer t
   :after all-the-icons)
@@ -367,15 +368,36 @@ It comming from flymake in the mode-line (if available)."
 ;;; the theme; each frame otherwise gets its correct modeline/icons.
 ;;; --------------------------------------------------------------------------
 
+(defun miguel/refresh-dashboard-if-visible ()
+  "Re-render the *dashboard* buffer in its own window if it is currently shown.
+Lets an appearance change (icons on/off) take effect without stealing focus."
+  (when (and (fboundp 'dashboard-refresh-buffer)
+             (get-buffer "*dashboard*"))
+    (let ((win (get-buffer-window "*dashboard*" t)))
+      (when win
+        (with-selected-window win
+          (dashboard-refresh-buffer))))))
+
 (defun miguel/apply-gui-appearance ()
   "Apply the rich graphical look for GUI frames."
   (mapc #'disable-theme custom-enabled-themes)
   (load-theme 'dracula t)
   (require 'all-the-icons nil t)
+  (require 'nerd-icons nil t)
   (when (fboundp 'all-the-icons-dired-mode)
     (add-hook 'dired-mode-hook #'all-the-icons-dired-mode))
   (when (fboundp 'doom-modeline-mode) (doom-modeline-mode 1))
-  (when (fboundp 'beacon-mode) (beacon-mode 1)))
+  (when (fboundp 'beacon-mode) (beacon-mode 1))
+  ;; Dashboard icons (nerd-icons) only make sense in a graphical frame.
+  (setq dashboard-set-file-icons t
+        dashboard-set-heading-icons t
+        dashboard-icon-type 'nerd-icons
+        dashboard-heading-icons '((recents   . "nf-oct-file")
+                                  (bookmarks . "nf-oct-bookmark")
+                                  (agenda    . "nf-oct-calendar")
+                                  (projects  . "nf-oct-file_directory")
+                                  (registers . "nf-oct-database")))
+  (miguel/refresh-dashboard-if-visible))
 
 (defun miguel/apply-tui-appearance ()
   "Apply the lean, terminal-friendly look for TUI frames."
@@ -384,7 +406,11 @@ It comming from flymake in the mode-line (if available)."
   (when (fboundp 'all-the-icons-dired-mode)
     (remove-hook 'dired-mode-hook #'all-the-icons-dired-mode))
   (when (fboundp 'doom-modeline-mode) (doom-modeline-mode -1))
-  (when (fboundp 'beacon-mode) (beacon-mode -1)))
+  (when (fboundp 'beacon-mode) (beacon-mode -1))
+  ;; No icons in the terminal dashboard (they render as boxes there).
+  (setq dashboard-set-file-icons nil
+        dashboard-set-heading-icons nil)
+  (miguel/refresh-dashboard-if-visible))
 
 (defun miguel/apply-appearance (&optional frame)
   "Apply GUI or TUI appearance based on FRAME's display type.
