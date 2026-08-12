@@ -32,11 +32,35 @@
   (dashboard-setup-startup-hook)
   (add-to-list 'dashboard-items '(agenda) t))
 
-(load-theme 'modus-vivendi t)
-;; Catppuccin (macchiato) experiment — disabled; preferred modus-vivendi.
-;; (straight-use-package '(catppuccin :host github :repo "catppuccin/emacs"))
-;; (setq catppuccin-flavor 'macchiato)
-;; (load-theme 'catppuccin :no-confirm)
+;; Themes and the heavier graphical packages are installed here but ACTIVATED
+;; conditionally: a rich look for GUI frames and a lean, terminal-friendly look
+;; for TUI frames. See the appearance dispatch at the end of this file.
+;; modus-vivendi (the TUI theme) is built in, so it needs no package.
+(use-package dracula-theme :ensure t :defer t)
+(use-package all-the-icons :ensure t :defer t)
+(use-package all-the-icons-dired
+  :ensure t :defer t
+  :after all-the-icons)
+(use-package doom-modeline
+  :ensure t :defer t
+  :custom
+  (doom-modeline-project-detection 'auto)
+  (doom-modeline-window-width-limit 80)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon t)
+  (doom-modeline-major-mode-color-icon t)
+  (doom-modeline-buffer-file-name-style 'truncate-except-project)
+  (doom-modeline-buffer-name t)
+  (doom-modeline-highlight-modified-buffer-name t)
+  (doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode))
+  (doom-modeline-battery t))
+(use-package beacon
+  :ensure t :defer t
+  :custom
+  (beacon-blink-duration 1)
+  (beacon-color "red")
+  (beacon-size 60)
+  (beacon-push-mark 10))
 (menu-bar-mode -1)
 
 (setq org-src-fontify-natively t)
@@ -330,6 +354,52 @@ It comming from flymake in the mode-line (if available)."
 (use-package rainbow-mode
   :ensure t
   :hook (text-mode prog-mode))
+
+;;; --------------------------------------------------------------------------
+;;; GUI vs TUI look and feel
+;;;
+;;; GUI frames get the rich graphical look (dracula theme, doom-modeline with
+;;; icons, beacon). TUI frames (for example inside tmux) keep the lean,
+;;; terminal-friendly look (modus-vivendi theme, the hand-rolled header-line
+;;; above, no icons). Themes are global in Emacs, so under a daemon serving
+;;; both GUI and terminal clients the most recently focused frame type wins for
+;;; the theme; each frame otherwise gets its correct modeline/icons.
+;;; --------------------------------------------------------------------------
+
+(defun miguel/apply-gui-appearance ()
+  "Apply the rich graphical look for GUI frames."
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'dracula t)
+  (require 'all-the-icons nil t)
+  (when (fboundp 'all-the-icons-dired-mode)
+    (add-hook 'dired-mode-hook #'all-the-icons-dired-mode))
+  (when (fboundp 'doom-modeline-mode) (doom-modeline-mode 1))
+  (when (fboundp 'beacon-mode) (beacon-mode 1)))
+
+(defun miguel/apply-tui-appearance ()
+  "Apply the lean, terminal-friendly look for TUI frames."
+  (mapc #'disable-theme custom-enabled-themes)
+  (load-theme 'modus-vivendi t)
+  (when (fboundp 'all-the-icons-dired-mode)
+    (remove-hook 'dired-mode-hook #'all-the-icons-dired-mode))
+  (when (fboundp 'doom-modeline-mode) (doom-modeline-mode -1))
+  (when (fboundp 'beacon-mode) (beacon-mode -1)))
+
+(defun miguel/apply-appearance (&optional frame)
+  "Apply GUI or TUI appearance based on FRAME's display type.
+FRAME defaults to the selected frame.  Interactively, re-applies the look for
+the current frame."
+  (interactive)
+  (with-selected-frame (or frame (selected-frame))
+    (if (display-graphic-p)
+        (miguel/apply-gui-appearance)
+      (miguel/apply-tui-appearance))))
+
+;; Apply immediately for the initial frame, and for every new frame under a
+;; daemon so GUI and terminal clients each get the right look.
+(if (daemonp)
+    (add-hook 'after-make-frame-functions #'miguel/apply-appearance)
+  (miguel/apply-appearance))
 
 (provide 'ui)
 ;;; ui.el ends here
