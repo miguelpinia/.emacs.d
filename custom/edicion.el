@@ -300,10 +300,17 @@ The date is inserted without the day of the week."
   :ensure t
   )
 
+;; objed disabled: objed-mode turned every movement command (C-n/C-p/C-f/C-b
+;; and the arrow keys) into a modal "object" editing state, which set the
+;; cursor to objed-cursor-color (#e52b50, red) and showed the object type
+;; like "line(w)" in the modeline. Re-enable the add-hook line to bring it
+;; back (optionally with a non-red objed-cursor-color).
 (use-package objed
   :ensure t
-  :init
-  (add-hook 'after-init-hook 'objed-mode))
+  :defer t
+  ;; :init
+  ;; (add-hook 'after-init-hook 'objed-mode)
+  )
 
 (provide 'edicion)
 ;;; edicion.el ends here
